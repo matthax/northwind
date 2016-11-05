@@ -4,4 +4,5 @@
     <meta content="Northwind Trader's Website" name='description'>
     <meta content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1' name='viewport'>
     <title>Northwind Traders</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
