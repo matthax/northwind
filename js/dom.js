@@ -328,6 +328,9 @@ dom.toast = function(text) {
         setTimeout(hide, 3000);
     }
 };
+dom.url = function() {
+    return [location.protocol, '//', location.host, location.pathname].join('');
+};
 var ajax = function(opts) {
     this.type = opts.type ? (ajax.REQUESTS[opts.type.toUpperCase()] ? opts.type : ajax.REQUESTS.GET) : ajax.REQUESTS.GET;
     this.url = ajax.getUrl(opts.url);

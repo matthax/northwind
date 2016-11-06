@@ -8,7 +8,7 @@ window.cart = function() {
         validate: false,
         debug: true,
         requestType: ajax.REQUESTS.GET,
-        url: window.location.href + "/api/cart",
+        url: dom.url() + "/api/cart",
 
     },
         listeners = {
@@ -203,12 +203,14 @@ window.cart = function() {
             display: "-webkit-box",
             display: "-ms-flexbox",
             display: "flex",
-            "max-width": "250px",
+            "width": "13em",
+            "height": "15em",
+            "margin-top": "1em",
+            overflow: "hidden",
             "-webkit-box-orient": "vertical",
             "-webkit-box-direction": "normal",
             "-ms-flex-direction": "column",
             "flex-direction": "column",
-            "min-height": "15em",
             "z-index": 1,
         }).append(dom.span({text: this.ProductName}).style({
                 "font-size": "24px",
