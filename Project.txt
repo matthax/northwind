@@ -1,0 +1,22 @@
+NorthWind Project
+
+This project will test and include all the technoliges we have covered in class (HTML, CSS, PHP, AJAX etc). You are tasked to create a website for NorthWind. NorthWind is a distributor and they have a database, but they do not have an effective method of viewing, editing, maintaining etc. this data. They want you to create a application/website where customers can log-in and order products from. 
+
+1) Create a log in page for Customers. 
+	A) Customer information is kept in the "customers" table. 
+		-Customer log-in username will be ID (this is only an integer so keep this in mind) and password will default to 'red123'.
+	B) After a customer has logged in take them to their respective page. Customers who have ordered from Northwind before should be able to see their past ordered items. 
+	C) create a sign-up page for new customers (since there is no password field this will still defualt to red123)
+		-This data should be saved in the customers table (users should be able to come in and log-in after signing up)
+
+2) Create an items page for customers. They need a way to search for items in Northwinds inventory to list out Northwinds items.
+	A) customers should be able to put items in cart and later check out.  
+	b) have a method where users can get more information about the selected item. From here adding to cart.  
+
+3) Create a shopping cart where users can check out and process their order. 
+	-when a user checks out they should be able to then see their orders (from Step 1).
+		-History of orders should be updated. 
+
+
+
+

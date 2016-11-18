@@ -10,8 +10,8 @@ if (!window.northwind) {
 window.pages = window.pages || {};
 window.pages.items = function() {
     var items = {};
-    var itemRegex = /\/?items\/[a-z0-9 ]+\/?$/gi;
-    var itemsRegex = /\/?items\/?/gi;
+    var itemRegex = /^\/?items\/[a-z0-9 ]+\/?$/i;
+    var itemsRegex = /^\/?items\/?/i;
     items.load = function(hash, callback) {
         if (itemRegex.test(hash)) {
             items.item(hash.substr(hash.lastIndexOf('/') + 1), callback);
@@ -39,10 +39,14 @@ window.pages.items = function() {
             }
             callback(itemContainer);
         });
-        cart.getItems();
+        var page = Number(dom.query.page), count = Number(dom.query.length);
+        if (isNaN(page)) { page = 0; }
+        if (isNaN(count)) { count = 10; }
+        console.log("Getting " + count + " items from page " + page);
+        cart.getItems({page: page, length: count });
     };
     items.item = function(itemID, callback) {
-        
+        console.log("Loading item " + itemID);
     };
     northwind.registerPageHandler("items", itemsRegex, items.load);
     return items;

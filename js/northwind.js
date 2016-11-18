@@ -38,13 +38,13 @@ window.northwind = function() {
         // make this fancier with like a loading screen or something
         dom("#page").removeChildren().append(page);
     };
-    window.onhashchange = function() {
+    window.addEventListener("hashchange", function() {
         changed();
-    };
+    });
     var init = function() {
         
     };
-                               
+    window.handlers = handlers;              
     return nw;
 }();
 /*

@@ -8,6 +8,7 @@ window.cart = function() {
         validate: false,
         debug: true,
         requestType: ajax.REQUESTS.GET,
+        toast: true,
         url: dom.url() + "/api/cart",
 
     },
@@ -34,6 +35,7 @@ window.cart = function() {
                 break;
             case "cartupdated":
             case "cartsaved":
+            case "cartloaded":
             default:
                 args = items;
                 break;
@@ -102,6 +104,35 @@ window.cart = function() {
                 }
             }
         }
+    };
+    cart.load = function() {
+        if (window.localStorage && window.localStorage.getItem) {
+            items = JSON.parse(window.localStorage.getItem("cart"));
+            cartEvent("cartloaded");
+        }
+    }
+    cart.save = function() {
+        if (window.localStorage && window.localStorage.setItem) {
+            window.localStorage.setItem("cart", JSON.stringify(items));
+            cartEvent("cartsaved");
+        }
+    };
+    cart.on("itemadded", function(ev, item) {
+        console.log(item);
+        if (settings.toast) {
+            dom.toast("Added " + item.ProductName, 'add_shopping_cart', cart.open);
+        }
+        cart.save();
+    });
+    cart.on("itemremoved", function(ev, item) {
+        console.log(item);
+        if (settings.toast) {
+            dom.toast("Removed " + item.ProductName, 'remove_shopping_cart', cart.open);
+        }
+        cart.save();
+    });
+    cart.open = function() {
+        
     };
     // @props {onsuccess, onerror, length, page}
     cart.getItems = function() {
@@ -205,7 +236,7 @@ window.cart = function() {
             display: "flex",
             "width": "13em",
             "height": "15em",
-            "margin-top": "1em",
+            "margin": "1em 1em",
             overflow: "hidden",
             "-webkit-box-orient": "vertical",
             "-webkit-box-direction": "normal",
@@ -242,6 +273,7 @@ window.cart = function() {
                 "font-size": "inherit",
                 "font-weight": "inherit",
                 "transform": "translate(0px, 0px)",
+                "background-color": "background-color: rgba(153, 153, 153, 0.2)",
                 "height": "36px",
                 "line-height": "36px",
                 "min-width": "88px",
@@ -253,7 +285,7 @@ window.cart = function() {
                 "background-color": "rgba(0, 0, 0, 0)",
                 "text-align": "center",
                 "user-select": "none",
-        })));
+        }).on('click', cart.add.bind(this, this))));
         return card;
     };
     
@@ -276,7 +308,7 @@ var testCart = function() {
         "minimum_reorder_quantity": 10,
         "category": "Oil",
         "attachments": ""
-        };
+    };
     var item = window.item = cart.item(window.sampleItem);
     item.validate(function(valid, item) { console.log(valid); console.log(item); });
 }
