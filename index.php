@@ -3,30 +3,30 @@
 <?php include 'north_head.php';?>
 <body>
     <style type="text/css">
-    #snackbar.show {
+    #snackbar.show, .snackbar-show {
         visibility: visible;
         -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
         animation: fadein 0.5s, fadeout 0.5s 2.5s;
     }
-    #snackbar {
-        visibility: hidden;
-        min-width: 250px;
-        width: 80%;
-        background-color: rgb(0, 188, 212);
-        color: #fff;
-        font-weight: bold;
-        text-align: center;
-        border-radius: 2px;
-        padding: 16px;
-        position: fixed;
-        z-index: 1;
-        right: 50%;
-        transform: translateX(50%);
-        bottom: 30px;
-        transition: all 0.5s ease;
-        /*-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-        animation: fadein 0.5s, fadeout 0.5s 2.5s;*/
-    }
+        #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            width: 80%;
+            background-color: rgb(0, 188, 212);
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            right: 50%;
+            transform: translateX(50%);
+            bottom: 30px;
+            transition: all 0.5s ease;
+            /*-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;*/
+        }
     @-webkit-keyframes fadein {
         from {bottom: 0; opacity: 0;} 
         to {bottom: 30px; opacity: 1;}

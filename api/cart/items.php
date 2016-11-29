@@ -55,12 +55,12 @@ if (!empty($_GET["ProductID"])) {
             echo json_encode($row);
         }
         else {
-            $err = array("error" => "Item does not exist", code => 1);
+            $err = array("error" => "Item does not exist", "code" => 1);
             echo json_encode($err);
         }
     }
     else {
-        $err = array("error" => "Invalid product ID", code => 0);
+        $err = array("error" => "Invalid product ID", "code" => 0);
         echo json_encode($err);
     }
 }
