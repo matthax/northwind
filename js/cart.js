@@ -6,9 +6,9 @@ window.cart = function() {
         items = {},
         settings = {
         validate: false,
+        toast: true,
         debug: true,
         requestType: ajax.REQUESTS.GET,
-        toast: true,
         url: dom.url() + "/api/cart",
 
     },
@@ -35,7 +35,6 @@ window.cart = function() {
                 break;
             case "cartupdated":
             case "cartsaved":
-            case "cartloaded":
             default:
                 args = items;
                 break;
@@ -44,6 +43,34 @@ window.cart = function() {
             for (var i = 0; i < listeners[type].length; ++i) {
                 listeners[type][i](type, args);
             }
+        }
+    };
+    var buttonHovered = function(ev) {
+        dom(this).style({
+            "background-color": "rgba(0, 0, 0, 0.05)",
+        });
+    };
+    var buttonLostHover = function(ev) {
+        dom(this).style({
+            "background-color": "rgba(0, 0, 0, 0)"
+        });
+    };
+    var textHovered = function(ev) {
+        dom(this).style({
+            color: "rgb(0, 188, 212)",
+            cursor: "pointer",
+        });
+    };
+    var textLostHover = function(ev) {
+        dom(this).style({
+            color: "rgba(0, 0, 0, 0.870588)",
+        });
+    };
+    var itemClicked = function(ev) {
+        document.location.hash = "/items/" + this.ProductID;
+        ev.cancelBubble = true;
+        if (ev.stopPropagation) {
+            ev.stopPropagation();
         }
     };
     var isItem = function(item, callback) {
@@ -74,7 +101,10 @@ window.cart = function() {
         isItem(item, function(valid, item) {
             if (valid) {
                 if (items[item.ProductID]) {
-                    ++items[item.ProductID].Quantity;
+                    if (item.Quantity == 0 || item.Quantity == 1)
+                        ++items[item.ProductID].Quantity;
+                    else
+                        items[item.ProductID].Quantity += item.Quantity;
                 }
                 else {
                     items[item.ProductID] = item;
@@ -86,31 +116,6 @@ window.cart = function() {
     cart.clear = function() {
         items = {};
     };
-    cart.remove = function(item) {
-        var old;
-        if (typeof item === "string") {
-            old = items[item];
-            delete items[item];
-            cartEvent("itemremoved", old);
-        }
-        else {
-            for (var property in items) {
-                if (items.hasOwnProperty(property)) {
-                    if (items[property] == item) {
-                        old = items[property];
-                        delete items[property];
-                        cartEvent("itemremoved", old);
-                    }
-                }
-            }
-        }
-    };
-    cart.load = function() {
-        if (window.localStorage && window.localStorage.getItem) {
-            items = JSON.parse(window.localStorage.getItem("cart"));
-            cartEvent("cartloaded");
-        }
-    }
     cart.save = function() {
         if (window.localStorage && window.localStorage.setItem) {
             window.localStorage.setItem("cart", JSON.stringify(items));
@@ -131,8 +136,65 @@ window.cart = function() {
         }
         cart.save();
     });
+    cart.load = function() {
+        items = {};
+        var item;
+        var loadedItems = JSON.parse(localStorage.getItem("cart"));
+        if (loadedItems) {
+            for (var property in loadedItems) {
+                if (loadedItems.hasOwnProperty(property)) {
+                    cart.add(new cart.item(loadedItems[property]));
+                }
+            }
+        }
+    }
     cart.open = function() {
         
+    };
+    cart.remove = function(item) {
+        var old;
+        if (typeof item === "string") {
+            old = items[item];
+            delete items[item];
+            cartEvent("itemremoved", old);
+        }
+        else {
+            for (var property in items) {
+                if (items.hasOwnProperty(property)) {
+                    if (items[property] == item) {
+                        old = items[property];
+                        delete items[property];
+                        cartEvent("itemremoved", old);
+                    }
+                }
+            }
+        }
+    };
+    cart.getItem = function(productID, callback, error) {
+        dom.ajax({
+            type: settings.requestType,
+            url: settings.url + "/items",
+            responseType: dom.ajax.RESPONSE_TYPES.JSON,
+            data: { ProductID: productID },
+            oncomplete: function(xhr, data) {
+                if(!data.error) {
+                    var item = new cart.item(data);
+                    cartEvent("itemretrieved", item);
+                    if (callback) {
+                        callback(item);
+                    }
+                }
+            },
+            onerror: function(xhr) {
+                if (settings.debug) {
+                    console.error("XHR failed for item validation", xhr);
+                    cartEvent("xhrerror", xhr);
+                    if (error) { 
+                        error(xhr);
+                    }
+                }
+            }
+        });
     };
     // @props {onsuccess, onerror, length, page}
     cart.getItems = function() {
@@ -182,14 +244,14 @@ window.cart = function() {
             props = JSON.parse(props);
         }
         this.ProductID = props["id"];
-        this.ProductName = props["product_name"].replace("booxch5_NW ", "");
-        this.SupplierIDs = props["supplier_ids"];
+        this.ProductName = props["product_name"] ? props["product_name"].replace("booxch5_NW ", "") : "";
+        this.SupplierIDs = props["supplier_ids"].split(",");
         this.ProductCode = props["product_code"];
         this.Description = props["description"];
         //this.Cost = props["standard_cost"];
-        this.Price = props["list_price"];
-        this.Unit = props["quantity_per_unit"];
-        this.MinimumOrder = props["minimum_reorder_quantity"];
+        this.Price = Number.parseFloat(props["list_price"]);
+        this.Unit = Number.parseInt(props["quantity_per_unit"]);
+        this.MinimumOrder = Number.parseInt(props["minimum_reorder_quantity"]);
         this.Category = props["category"];
         this.Quantity = 0;
     };
@@ -236,29 +298,33 @@ window.cart = function() {
             display: "flex",
             "width": "13em",
             "height": "15em",
-            "margin": "1em 1em",
+            "margin": "1em 1em 0 0",
+            position: "relative",
             overflow: "hidden",
             "-webkit-box-orient": "vertical",
             "-webkit-box-direction": "normal",
             "-ms-flex-direction": "column",
             "flex-direction": "column",
+            "flex-grow": 1,
             "z-index": 1,
         }).append(dom.span({text: this.ProductName}).style({
                 "font-size": "24px",
             color: "rgba(0, 0, 0, 0.870588)",
             display: "block",
             "line-height": "36px",
-        })).append(dom.div({ text: this.Description }).style({
+            transition: "color 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
+        }).on("mouseover", textHovered).on("mouseout", textLostHover).on("click", itemClicked.bind(this))).append(dom.div({ text: this.Description }).style({
             "padding": "16px",
             "font-size": "14px",
             "color": "rgba(0, 0, 0, 0.870588)"
         })).append(dom.div().style({
             padding: "8px",
-            position: "relative"
+            position: "absolute",
+            bottom: 0,
         }).append(
             dom.create("button", {
                 type: "button", 
-                text: "Add to Cart " + this.Price 
+                text: "Add to Cart $" + this.Price.toFixed(2)
             }).style({
                 "border": "10px",
                 "box-sizing": "border-box",
@@ -273,7 +339,6 @@ window.cart = function() {
                 "font-size": "inherit",
                 "font-weight": "inherit",
                 "transform": "translate(0px, 0px)",
-                "background-color": "background-color: rgba(153, 153, 153, 0.2)",
                 "height": "36px",
                 "line-height": "36px",
                 "min-width": "88px",
@@ -282,17 +347,18 @@ window.cart = function() {
                 "border-radius": "2px",
                 "position": "relative",
                 "overflow": "hidden",
+                "padding": ".2em",
+                "box-shadow": "0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)",
                 "background-color": "rgba(0, 0, 0, 0)",
                 "text-align": "center",
                 "user-select": "none",
-        }).on('click', cart.add.bind(this, this))));
+        }).on("mouseover", buttonHovered).on("mouseout", buttonLostHover).on("click", cart.add.bind(cart, this))));
         return card;
     };
     
     cart.settings = settings;
     return cart;
 }();
-
 var testCart = function() {
     var startItem = window.sampleItem ={
         "id": 5,
@@ -308,7 +374,7 @@ var testCart = function() {
         "minimum_reorder_quantity": 10,
         "category": "Oil",
         "attachments": ""
-    };
+        };
     var item = window.item = cart.item(window.sampleItem);
     item.validate(function(valid, item) { console.log(valid); console.log(item); });
 }
