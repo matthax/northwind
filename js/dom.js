@@ -227,6 +227,23 @@ node.prototype.transitionEnd = function(callback) {
     }
     return this;
 };
+node.prototype.animationEvent = function(type, callback) {
+    var pfx = ["webkit", "moz", "MS", "o", ""];
+	for (var p = 0; p < pfx.length; p++) {
+		if (!pfx[p]) type = type.toLowerCase();
+		this.node.addEventListener(pfx[p]+type, callback, false);
+	}
+    return this;
+};
+node.prototype.animationStart = function(callback) {
+    return this.animationEvent("AnimationStart", callback);
+};
+node.prototype.animationEnd = function(callback) {
+    return this.animationEvent("AnimationEnd", callback);
+};
+node.prototype.animationIteration = function(callback) {
+    return this.animationEvent("AnimationIteration", callback);
+};
 /*node.prototype.ripple = function() {
         var ripple = dom.div().style({
             position: "absolute",
@@ -255,7 +272,7 @@ var dom = function(selector) {
     var count = arguments.length > 2 ? arguments[2] : -1;
     //add , support
     if (arguments.length === 2 && !(arguments[1] instanceof Node || arguments[1] instanceof Element)) {
-        console.warn(arguments);
+        //console.warn(arguments);
         return dom.create(arguments[0], arguments[1]);
     }
     else if (selector instanceof Node) {
@@ -330,7 +347,7 @@ dom.icon = function(icon) {
 dom.fontawesome = function(icon) {
     return this.create('i', {class: 'fa fa-' + icon});
 }
-dom.toast = function(text) {
+/*dom.toast = function(text) {
     var icon = arguments.length > 1 && typeof arguments[1] === "string" ? dom.icon(arguments[1]).style({float:'left'}) : (arguments.length > 2 && typeof arguments[2] === "string" ? dom.icon(arguments[2]).style({float:'left'}) : null);
     
     var onclick = arguments.length > 1 && typeof arguments[1] === "function" ? arguments[1] : arguments.length > 2 && typeof arguments[2] === "function" ? arguments[2] : null;
@@ -366,7 +383,7 @@ dom.toast = function(text) {
         dom(document.body).append(snack.text(text).append(icon).addClass('show'));
         setTimeout(hide, 3000);
     }
-};
+};*/
 dom.url = function() {
     return [location.protocol, '//', location.host, location.pathname].join('');
 };
@@ -402,6 +419,20 @@ dom.transitionEvent = function() {
     window.addEventListener("popstate", change);
     change();
 })();
+dom.debounce = function(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
 var ajax = function(opts) {
     this.type = opts.type ? (ajax.REQUESTS[opts.type.toUpperCase()] ? opts.type : ajax.REQUESTS.GET) : ajax.REQUESTS.GET;
     this.url = ajax.getUrl(opts.url);
