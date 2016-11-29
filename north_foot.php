@@ -6,3 +6,4 @@
 <script src="js/cart.js" type="text/javascript"></script>
 <script src="js/northwind.js" type="text/javascript"></script>
 <script src="js/items.js" type="text/javascript"></script>
+<script src="js/register.js" type="text/javascript"></script>

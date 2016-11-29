@@ -95,6 +95,6 @@ window.pages.items = function() {
             console.error(e);
         });
     };
-    northwind.registerPageHandler("items", itemsRegex, items.load);
+    northwind.registerPageHandler("Items", itemsRegex, items.load);
     return items;
 }();

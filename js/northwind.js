@@ -23,6 +23,7 @@ window.northwind = function() {
             handlers[name] = { regex: re, handler: handler };
             var page = getHashPage();
             if (re.test(page)) {
+                dom("#page-title").text(name);
                 handler(page, nw.load);
             }
         }

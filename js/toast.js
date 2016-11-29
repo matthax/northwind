@@ -31,19 +31,19 @@ window.dom.toast = function() {
             var toast = queue.shift();
             var toaster = toast.el;
             moveUp();
-                active.push(toaster);
-                container.append(toaster);
-                    toaster.style({transform: toaster.style('transform').replace("0%", "50%"), opacity: 1});
-                    window.setTimeout(function() {
-                        var transitionEnded = function() {
-                            //console.log("transition ended");
-                            toaster.off(dom.transitionEvent, transitionEnded);
-                            toastEvent("hidden", toast);
-                            active.shift().remove();
-                        };
-                        dom(toaster).transitionEnd(transitionEnded).style({
-                            transform: toaster.style('transform').replace("50%", "100%"), opacity: 0}) 
-                    }, 3000);
+            active.push(toaster);
+            container.append(toaster);
+                toaster.style({transform: toaster.style('transform').replace("0%", "50%"), opacity: 1});
+                window.setTimeout(function() {
+                    var transitionEnded = function() {
+                        //console.log("transition ended");
+                        toaster.off(dom.transitionEvent, transitionEnded);
+                        toastEvent("hidden", toast);
+                        active.shift().remove();
+                    };
+                    dom(toaster).transitionEnd(transitionEnded).style({
+                        transform: toaster.style('transform').replace("50%", "100%"), opacity: 0}) 
+                }, 3000);
         }
     };
     var tempIndex = 0;
