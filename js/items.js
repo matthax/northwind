@@ -14,7 +14,7 @@ window.pages.items = function() {
     var itemsRegex = /^\/items\/?/i;
     var container = dom.div();
     var moreItems = true, requestPending = false, firstLoad = true;
-    var page = Number(dom.query.page), count = Number(dom.query.length);
+    var page = Number(dom.query.page), count = Number(dom.query.length), search = dom.query.q;
     if (isNaN(page)) { page = 0; }
     if (isNaN(count)) { count = 10; }
     
@@ -22,7 +22,12 @@ window.pages.items = function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             if (moreItems && !requestPending) {
                 requestPending = true;
-                cart.getItems({page: ++page, length: count });
+                if (search) {
+                    cart.getItems({page: ++page, length: count, q: search });
+                }
+                else {
+                    cart.getItems({page: ++page, length: count });
+                }
             }
         }
     }, 250);
@@ -38,6 +43,23 @@ window.pages.items = function() {
         }
     };
     items.shop = function(callback) {
+        var query = function(value) {
+            search = value;
+            itemContainer.removeChildren();
+            if (search) {
+                cart.getItems({page: page, length: count, q: search });
+            }
+            else {
+                cart.getItems({page: page, length: count });
+            }
+        };
+        var app = dom.div().append(dom.create("input", {type: "text", required: "required", placeholder: "Search", name: "q", "class": "material-input"}).on("keyup", function(ev) {
+            if (ev.which == 13 || ev.keyCode == 13) {
+                query(this.value);
+            }
+        }).on("change", function(ev) {
+            query(this.value);
+        }));
         var itemContainer = container.style({
                 padding: 0,
                 margin: 0,
@@ -50,6 +72,7 @@ window.pages.items = function() {
                 "-webkit-flex-flow": "row wrap",
                 "justify-content": "space-around",
         });
+        app.append(itemContainer);
         cart.on("itemsretrieved", function(ev, items) { 
             console.log("retrieved " + items.length + " items");
             for (var i = 0; i < items.length; ++i) {
@@ -61,12 +84,12 @@ window.pages.items = function() {
             }
             if (firstLoad) {
                 firstLoad = false;
-                callback(itemContainer);
+                callback(app);
             }
         });
         window.addEventListener('scroll', onscroll);
         console.log("Getting " + count + " items from page " + page);
-        cart.getItems({page: page, length: count });
+        query(search);
     };
     items.item = function(itemID, callback) {
         firstLoad = true;

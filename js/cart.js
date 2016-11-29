@@ -311,10 +311,18 @@ window.cart = function() {
                 "font-size": "24px",
             color: "rgba(0, 0, 0, 0.870588)",
             display: "block",
+            "padding-left": ".25em",
             "line-height": "36px",
             transition: "color 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-        }).on("mouseover", textHovered).on("mouseout", textLostHover).on("click", itemClicked.bind(this))).append(dom.div({ text: this.Description }).style({
+        }).on("mouseover", textHovered).on("mouseout", textLostHover).on("click", itemClicked.bind(this))).append(dom.span({text: this.Category}).style({
+            "font-size": "16px",
+            color: "rgba(0, 0, 0, 0.5)",
+            display: "block",
+            "padding-left": ".5em",
+            "line-height": "24px",
+        })).append(dom.div({ text: this.Description }).style({
             "padding": "16px",
+            "padding-left": ".25em",
             "font-size": "14px",
             "color": "rgba(0, 0, 0, 0.870588)"
         })).append(dom.div().style({

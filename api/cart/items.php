@@ -66,19 +66,26 @@ if (!empty($_GET["ProductID"])) {
 }
 else {
     // create our prepared statement
-    $stmnt = $conn->prepare("SELECT `id`, `supplier_ids`, `product_code`, `product_name`, `description`, `standard_cost`, `list_price`, `reorder_level`, `target_level`, `quantity_per_unit`, `discontinued`, `minimum_reorder_quantity`, `category`, `attachments` FROM `products` ORDER BY ID ASC LIMIT ? OFFSET ?");
-    // bind the two params as integers
-    $stmnt->bind_param("ii", $pagelength, $offset);
+    $sql = "SELECT `id`, `supplier_ids`, `product_code`, `product_name`, `description`, `standard_cost`, `list_price`, `reorder_level`, `target_level`, `quantity_per_unit`, `discontinued`, `minimum_reorder_quantity`, `category`, `attachments` FROM `products` WHERE lower(`product_name`) LIKE ? or lower(`category`) LIKE ? ORDER BY ID ASC LIMIT ? OFFSET ?";
+    $stmnt = $conn->prepare($sql);
     
+    $stmnt->bind_param("ssii", $search, $searchcat, $pagelength, $start);
+    
+    // bind wildcard if we don't have any search string, mysql should optimize it out
+    $safesearch = empty($_GET["q"]) ? "" : $conn->real_escape_string($_GET["q"]);
+    $search = empty($_GET["q"]) ? "%" : strtolower("booxch5_NW %$safesearch%");
+    $searchcat = empty($_GET["q"]) ? "%" : strtolower("%$safesearch%");
     // default page length is 10
     $pagelength = abs(!empty($_GET["length"]) ? intval($_GET["length"]) : 10);
     if ($pagelength <= 0) {
         $pagelength = 10;
     }
     // default start point is 0
-    $start = abs(!empty($_GET["page"]) ? intval($_GET["page"]) : 0);
     // if we have a value for length and it's a number
-    $offset = $start * $pagelength;
+    $start = abs(!empty($_GET["page"]) ? intval($_GET["page"]) : 0) * $pagelength;
+    
+    
+    
     
     $result = $stmnt->execute();
     $stmnt->bind_result($id, $supplier_ids, $product_code, $product_name, $description, $standard_cost, $list_price, $reorder_level, $target_level, $quantity_per_unit, $discontinued, $minimum_reorder_quantity, $category, $attachments);
