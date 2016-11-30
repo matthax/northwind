@@ -45,7 +45,6 @@ if (!empty($_GET["CustomerID"])) {
                     "list_price" => $list_price,
                     "category" => $category, 
                     "order_date" => $order_date, 
-                    "ship_name" => $ship_name, 
                     "quantity" => $quantity, 
                     "unit_price" => $unit_price);
             $rows[] = $row;    
