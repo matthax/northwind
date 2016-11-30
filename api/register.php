@@ -1,4 +1,6 @@
 <?php
+session_start(); 
+
 header('Content-Type: application/json');
     $servername = "localhost";
     $username = "root";
@@ -6,7 +8,7 @@ header('Content-Type: application/json');
     $database = "booxch5_NW";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {        
-        $required_fields = array("company", "last_name", "first_name", "email_address", "job_title", "home_phone", "address", "city", "state_province", "zip_postal_code", "country_region");
+        $required_fields = array("last_name", "first_name", "email_address");
         $result = array();
         foreach ($required_fields as $field) {
             if (empty($_POST[$field])) {
@@ -48,6 +50,8 @@ header('Content-Type: application/json');
 
             $stmt->execute();
             $result = array("success" => true, "user_id" =>$stmt->insert_id);
+            $_SESSION["user_name"] = $first_name;
+            $_SESSION["id"] = $result["user_id"];
             echo json_encode($result);
 
             $stmt->close();

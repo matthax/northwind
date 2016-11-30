@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -26,7 +28,7 @@ if ($conn->connect_error) {
 }*/
 if (!empty($_GET["CustomerID"])) {
     if (ctype_digit($_GET["CustomerID"])) {
-        $stmnt = $conn->prepare("SELECT products.product_name, products.standard_cost, products.list_price, products.category, orders.order_date, orders.ship_name, details.quantity, details.unit_price FROM orders INNER JOIN (SELECT * FROM customers) AS customers on customers.id = orders.customer_id INNER JOIN (SELECT * FROM order_details) AS details on orders.id = details.order_id INNER JOIN (SELECT * FROM products) AS products on details.product_id = products.id WHERE customers.id = ?");
+        $stmnt = $conn->prepare("SELECT products.product_name, products.standard_cost, products.list_price, products.category, orders.order_date details.quantity, details.unit_price FROM orders INNER JOIN (SELECT * FROM customers) AS customers on customers.id = orders.customer_id INNER JOIN (SELECT * FROM order_details) AS details on orders.id = details.order_id INNER JOIN (SELECT * FROM products) AS products on details.product_id = products.id WHERE customers.id = ?");
         // bind our id parameter
         $stmnt->bind_param("i", $id);
         // set the id parameter
