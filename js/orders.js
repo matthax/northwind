@@ -34,7 +34,7 @@ window.user = function() {
             type: settings.requestType,
             url: settings.url,
             responseType: dom.ajax.RESPONSE_TYPES.JSON,
-            data: { CustomerID: /*sessionStorage.getItem("user_name")*/4 },
+            data: { CustomerID: sessionStorage.getItem("id") },
             oncomplete: function(xhr, data) {
                 var userOrders = [];
                 for (var i = 0; i < data.length; ++i) {
