@@ -169,6 +169,23 @@ form a {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
+.material-button-load-button {
+  border: none;
+  background: rgb(0, 188, 212);
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px;
+  width: 60%;
+  height: 3em;
+  color: white;
+  position: absolute;
+  margin-left: 50%;
+  margin-bottom: 1%;
+  margin-top: 1%;
+  transform: translateX(-50%);
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
 .flex-item {
   flex: .001;
   opacity: 0;
