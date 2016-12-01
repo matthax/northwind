@@ -80,6 +80,11 @@ form h1 {
   padding: 20px;
 }
 
+form a {
+  font-size: 15px;
+  margin-left: 20%;
+}
+
 .material-input {
   margin: 40px 25px;
   width: 90%;
@@ -157,6 +162,7 @@ form h1 {
   height: 3em;
   color: white;
   margin-left: 50%;
+  margin-bottom: 1%;
   transform: translateX(-50%);
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
 }
