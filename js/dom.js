@@ -88,7 +88,8 @@ node.prototype.remove = function() {
         return this;
     }
     else {
-        this.node.parentNode.removeChild(this.node);
+        if (this.node.parentNode)
+            this.node.parentNode.removeChild(this.node);
     }
     return null;
 };
@@ -139,6 +140,10 @@ node.prototype.attr = function(props) {
     }
     return this;
 };
+node.prototype.removeAttr = function(attr) {
+    this.node.removeAttribute(attr);
+    return this;
+}
 node.prototype.style = function(styles) {
     if (styles == null) return this;
     if (typeof styles === "string") {
@@ -433,9 +438,8 @@ dom.debounce = function(func, wait, immediate) {
 		if (callNow) func.apply(context, args);
 	};
 };
-
-dom.requestAnimationFrame = ( function() {
-	return window.webkitRequestAnimationFrame ||
+window.requestAnimationFrame = window.requestAnimationFrame || 
+        window.webkitRequestAnimationFrame ||
 		window.mozRequestAnimationFrame ||
 		window.oRequestAnimationFrame ||
 		window.msRequestAnimationFrame ||
@@ -443,7 +447,6 @@ dom.requestAnimationFrame = ( function() {
 
 		window.setTimeout( callback, 1000 / 60 );
 	};
-} )();
 var ajax = function(opts) {
     if (!(this instanceof ajax)) {
         return new ajax(opts);

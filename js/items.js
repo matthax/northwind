@@ -63,7 +63,15 @@ window.pages.items = function() {
             }
         }).on("change", function(ev) {
             query(this.value);
-        }));
+        })).append(function() {
+            var chips = [], onclick = function(ev) {
+                query(dom(this).data("category"));
+            };
+            for (var i = 0; i < cart.categories.length; ++i) {
+                chips.push(dom.create("div", {"class": "material-chip", "data-category": cart.categories[i]}).append(dom.span({text: cart.categories[i]})).on("click", onclick));
+            }
+            return chips;
+            }());
         var itemContainer = container.style({
                 padding: 0,
                 margin: 0,
@@ -91,8 +99,8 @@ window.pages.items = function() {
         app.append(loadMoreButton);
         cart.on("itemsretrieved", function(ev, items) { 
             console.log("retrieved " + items.length + " items");
-            if (items.length === 0) {
-                app.remove(loadMoreButton);
+            if (items.length === 0 && loadMoreButton) {
+                loadMoreButton.remove();
             }
             for (var i = 0; i < items.length; ++i) {
                 itemContainer.append(items[i].toElement());

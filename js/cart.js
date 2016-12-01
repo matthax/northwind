@@ -6,6 +6,7 @@ window.cart = function() {
         items = {},
         settings = {
         validate: false,
+        savetime: 1500,
         toast: true,
         debug: true,
         requestType: ajax.REQUESTS.GET,
@@ -124,30 +125,42 @@ window.cart = function() {
         }
     };
     cart.on("itemadded", function(ev, item) {
-        console.log(item);
+        //console.log(item);
         if (settings.toast) {
             dom.toast("Added " + item.ProductName, 'add_shopping_cart', cart.open);
         }
-        cart.save();
     });
+    cart.on("itemadded", dom.debounce(function(ev, item) {
+            cart.save();
+            console.info("saved cart");
+        }
+    , settings.savetime));
+    cart.on("itemremoved", dom.debounce(function(ev, item) {
+        
+            cart.save();
+            console.info("saved cart");
+        }
+    , settings.savetime));
     cart.on("itemremoved", function(ev, item) {
         console.log(item);
         if (settings.toast) {
             dom.toast("Removed " + item.ProductName, 'remove_shopping_cart', cart.open);
         }
-        cart.save();
     });
     cart.load = function() {
         items = {};
         var item;
         var loadedItems = JSON.parse(localStorage.getItem("cart"));
+        var doToast = settings.toast;
         if (loadedItems) {
+            settings.toast = false;
             for (var property in loadedItems) {
                 if (loadedItems.hasOwnProperty(property)) {
                     cart.add(new cart.item(loadedItems[property]));
                     cart.setQuantity(loadedItems[property].ProductID, loadedItems[property].Quantity);
                 }
             }
+            settings.toast = doToast;
         }
     };
     var itemRemoved = function(ev, item) {
@@ -261,6 +274,7 @@ window.cart = function() {
             }
         });
     };
+    cart.categories = ["Beverages","Condiments","Oil","Jams, Preserves","Dried Fruit & Nuts","Sauces","Canned Fruit & Vegetables","Baked Goods & Mixes","Canned Meat","Soups","Candy","Grains","Pasta","Dairy products","Cereal","Chips, Snacks"];
     // @props {onsuccess, onerror, length, page}
     cart.getItems = function() {
         var props = arguments.length > 0 ? arguments[0] : { page: 0, count: 10 };

@@ -185,6 +185,31 @@ form a {
   transform: translateX(-50%);
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
 }
+.material-chip {
+  display: inline-block;
+  border-radius: 42px;
+  padding: 0;
+  height: 42px;
+    background-color: rgb(0, 188, 212);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  -webkit-transition: .2s ease-out;
+          transition: .2s ease-out;
+}
+
+.material-chip:hover {
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.material-chip > span {
+  display: inline-block;
+  font-weight: 400;
+  font-size: 16px;
+  height: 42px;
+  float: left;
+  padding: 12px 18px 12px 10px;
+  color: rgba(255, 255, 255, .97);
+}
 
 .flex-item {
   flex: .001;
@@ -368,8 +393,8 @@ form a {
             <div style="margin-top: 8px; margin-right: -16px; margin-left: auto;">
                 <div style="display: inline-block; position: relative;">
                     <button tabindex="0" type="button" class="drop right" style="color:white;border: 10px; box-sizing: border-box; display: inline-block; font-family: Roboto, sans-serif; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: pointer; text-decoration: none; margin:0; outline: none; font-weight: inherit; transform: translate(0px, 0px); position: relative; overflow: visible; transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; width: 48px; height: 48px; background: none;">
-                                            <ul>
-                      <li><a href="#/register">Register</a></li>
+                    <ul id="account_menu">
+                      <li><a href="#/cart">Cart</a></li>
                       <li><a href="#/login">Login</a></li>
                       <li><a href="#/logout">Logout</a></li>
                     </ul>

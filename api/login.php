@@ -43,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // prepare and bind
         $stmt = $conn->prepare("SELECT `first_name`,`last_name` FROM `customers` where `id` = ?");
         $stmt->bind_param("i", $user_id);
-        echo $_POST["user_id"];
         $user_id = $conn->real_escape_string(intval($_POST["user_id"]));
         $password = $conn->real_escape_string($_POST["password"]);
 

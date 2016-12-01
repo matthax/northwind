@@ -4,6 +4,7 @@ if (!window.dom) {
 window.dom.toast = function() {
     var settings = {
         max: 5,
+        duration: 3000,
         icon: "material",
     };
     var container = dom.create("div", {"class": "toast-box"});
@@ -22,7 +23,7 @@ window.dom.toast = function() {
     var moveUp = function() {
         for (var i = 0; i < active.length; ++i) {
             //console.log(i, active[i], active[i].node.offsetHeight);
-            active[i].style({transform: "translate(50%, -" + ((active[i].node.offsetHeight + 10) * ((active.length - i))) + "px)" });
+            active[i].style({transform: "translate(0%, -" + ((active[i].node.offsetHeight + 10) * ((active.length - i))) + "px)" });
         }
     };
     var show = function(prev) {
@@ -33,7 +34,9 @@ window.dom.toast = function() {
             moveUp();
             active.push(toaster);
             container.append(toaster);
-                toaster.style({transform: toaster.style('transform').replace("0%", "50%"), opacity: 1});
+            // request animation frame to ensure our toast has been rendered by the browser
+            window.requestAnimationFrame(function() {
+                toaster.style({ transform: toaster.style('transform').replace("200%", "0px"),}); //transform: toaster.style('transform').replace("0%", "50%"),
                 window.setTimeout(function() {
                     var transitionEnded = function() {
                         //console.log("transition ended");
@@ -42,16 +45,15 @@ window.dom.toast = function() {
                         active.shift().remove();
                     };
                     dom(toaster).transitionEnd(transitionEnded).style({
-                        transform: toaster.style('transform').replace("50%", "100%"), opacity: 0}) 
-                }, 3000);
+                        transform: toaster.style('transform').replace("0%", "100%"), opacity: 0}) 
+                }, settings.duration);
+            });
         }
     };
-    var tempIndex = 0;
     var makeToast = function(message, icon) {
-        var toaster = dom.create('div', {class: "toast"}).style({
+        var toaster = dom.create('div', {class: "toast", text: message}).style({
             visibility: "visible",
             "min-width": "75px",
-            width: "30%",
             "background-color": "rgb(0, 188, 212)",
             color: "#fff",
             "font-weight": "bold",
@@ -60,8 +62,8 @@ window.dom.toast = function() {
             padding: "16px",
             position: "fixed",
             "z-index": 1,
-            right: "20%",
-            transform: "translate(0%, 0px)",
+            right: "20px",
+            transform: "translate(0%, 200%)",
             bottom: "30px",
             "moz-transition": "all 0.5s ease",
             "-webkit-transition": "all 0.5s ease",
@@ -75,11 +77,10 @@ window.dom.toast = function() {
                 toaster.append(dom.fontawesome(icon).style({float: "left"}));
             }
         }
-        toaster.text(message + " " + ++tempIndex);
         return toaster;
     };
     var toast = function(message) {
-        var icon = arguments.length > 1 ? null : arguments[1];
+        var icon = arguments.length > 1 ? arguments[1] : null ;
         if (!(this instanceof toast)) {
             return new toast(message, icon);
         }

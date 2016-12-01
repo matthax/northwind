@@ -140,6 +140,6 @@ window.pages.orders = function () {
             }
         })
     };
-    northwind.registerPageHandler("Order History", /^\/order-history\/?/i, user.load);
+    northwind.registerPageHandler("Order History", /^\/orders\/?/i, user.load);
     return order;
 }();
