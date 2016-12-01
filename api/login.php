@@ -8,7 +8,7 @@ $password = "";
 $database = "booxch5_NW";
 
 $password_access = "red123";
-$user_name_success = false;
+$user_id_success = false;
 $password_success = false;
 $login_success = false;
 
@@ -47,19 +47,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = $conn->real_escape_string($_POST["password"]);
 
         $stmt->execute();
-        $stmnt -> bind_result($first_name);
+        $stmt->bind_result($first_name);
 
         if ($password === $password_access) {
             $password_success = true;
         }
         if (!empty($first_name)) {
-            $user_name_success = true;
+            $user_id_success = true;
         }
-        if ($password_success && $user_name_success) {
+        if ($password_success && $user_id_success) {
             $login_success = true;
         }
 
-        $result = array("user_name_success" => $user_name_success, "password_success" => $password_success, "login_success" => $login_success);
+        $result = array("user_id_success" => $user_id_success, "password_success" => $password_success, "login_success" => $login_success, "first_name" => $first_name, "user_id" => $user_id);
         $_SESSION["user_name"] = $first_name;
         $_SESSION["id"] = $user_id;
         echo json_encode($result);
