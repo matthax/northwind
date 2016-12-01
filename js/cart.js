@@ -238,7 +238,7 @@ window.cart = function() {
     cart.getItem = function(productID, callback, error) {
         dom.ajax({
             type: settings.requestType,
-            url: settings.url + "/items",
+            url: settings.url + "items",
             responseType: dom.ajax.RESPONSE_TYPES.JSON,
             data: { ProductID: productID },
             oncomplete: function(xhr, data) {

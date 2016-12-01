@@ -445,6 +445,9 @@ dom.requestAnimationFrame = ( function() {
 	};
 } )();
 var ajax = function(opts) {
+    if (!(this instanceof ajax)) {
+        return new ajax(opts);
+    }
     this.type = opts.type ? (ajax.REQUESTS[opts.type.toUpperCase()] ? opts.type : ajax.REQUESTS.GET) : ajax.REQUESTS.GET;
     this.url = ajax.getUrl(opts.url);
     this.data = opts.data ? opts.data : null;

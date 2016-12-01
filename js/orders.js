@@ -9,7 +9,7 @@ window.user = function() {
             toast: true,
             debug: true,
             requestType: ajax.REQUESTS.GET,
-            url: dom.url() + "/api/orders",
+            url: dom.url() + "api/orders",
         },
         listeners = {
             "orderRetrieved": []
