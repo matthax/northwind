@@ -433,6 +433,17 @@ dom.debounce = function(func, wait, immediate) {
 		if (callNow) func.apply(context, args);
 	};
 };
+
+dom.requestAnimationFrame = ( function() {
+	return window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
+		window.msRequestAnimationFrame ||
+		function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
+
+		window.setTimeout( callback, 1000 / 60 );
+	};
+} )();
 var ajax = function(opts) {
     this.type = opts.type ? (ajax.REQUESTS[opts.type.toUpperCase()] ? opts.type : ajax.REQUESTS.GET) : ajax.REQUESTS.GET;
     this.url = ajax.getUrl(opts.url);

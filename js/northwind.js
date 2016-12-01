@@ -1,9 +1,6 @@
 if (!window.dom) {
     throw "Dom.js is required";
 }
-if (!window.cart) {
-    throw "Cart.js is required";
-}
 window.northwind = function() {
     var nw = {}, handlers = {}, getHashPage = function() {
         return document.location.hash.length > 0 ? document.location.hash.substr(1).toLowerCase() : "/";
@@ -12,6 +9,7 @@ window.northwind = function() {
         for (var property in handlers) {
             if (handlers.hasOwnProperty(property)) {
                 if (handlers[property].regex.test(page)) {
+                    dom("#page-title").text(property);
                     handlers[property].handler(page, nw.load);
                     break;
                 }
@@ -23,7 +21,6 @@ window.northwind = function() {
             handlers[name] = { regex: re, handler: handler };
             var page = getHashPage();
             if (re.test(page)) {
-                dom("#page-title").text(name);
                 handler(page, nw.load);
             }
         }

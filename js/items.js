@@ -12,7 +12,7 @@ window.pages.items = function() {
     var items = {};
     var itemRegex = /^\/items\/[a-z0-9 ]+\/?$/i;
     var itemsRegex = /^\/items\/?/i;
-    var container = dom.div();
+    var container;
     var moreItems = true, requestPending = false, firstLoad = true;
     var page = Number(dom.query.page), count = Number(dom.query.length), search = dom.query.q;
     if (isNaN(page)) { page = 0; }
@@ -35,6 +35,8 @@ window.pages.items = function() {
         window.removeEventListener('scroll', onscroll);
     };
     items.load = function(hash, callback) {
+        firstLoad = true;
+        container = dom.div();
         if (itemRegex.test(hash)) {
             items.item(hash.substr(hash.lastIndexOf('/') + 1), callback);
         }
@@ -46,6 +48,7 @@ window.pages.items = function() {
         var query = function(value) {
             search = value;
             itemContainer.removeChildren();
+            requestPending = true;
             if (search) {
                 cart.getItems({page: page, length: count, q: search });
             }

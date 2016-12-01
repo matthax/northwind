@@ -14,7 +14,7 @@ window.pages.register = function () {
         
     };
     register.load = function (hash, callback) {
-        var form = dom.create("form", {action: dom.url + "/api/register", method: "POST" })
+        var form = dom.create("form", {action: dom.url() + "api/register", method: "POST" })
             /*.append(dom.create("h1", {text: "Register"}))*/
             .append(dom.create("input", {type: "text", required: "required", placeholder: "First Name", name: "first_name", "class": "material-input"}))
             .append(dom.create("input", {type: "text", required: "required", placeholder: "Last Name", name: "last_name", "class": "material-input"}))

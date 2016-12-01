@@ -4,6 +4,9 @@
 <?php include 'north_head.php';?>
 <body>
     <style type="text/css">
+        body {
+            font-family: 'roboto', sans-serif;
+        }
     #snackbar.show, .snackbar-show {
         visibility: visible;
         -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
@@ -124,11 +127,176 @@ form h1 {
           transform: translateY(-3px);
   box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
+.flex-item {
+  flex: .001;
+  opacity: 0;
+  -webkit-animation: flexGrow 500ms ease forwards 100ms;
+  -o-animation: flexGrow 500ms ease forwards 100ms;
+  animation: flexGrow 500ms ease forwards 100ms;
+}
+
+.flex-item.remove {
+  flex: 13em;
+  -webkit-animation: flexShrink 500ms ease forwards;
+  -o-animation: flexShrink 500ms ease forwards;
+  animation: flexShrink 500ms ease forwards;
+}
+
+@-webkit-keyframes flexGrow {
+  to {
+    flex: 13em;
+    opacity: 1;
+  }
+}
+@-o-keyframes flexGrow {
+  to {
+    flex: 13em;
+    opacity: 1;
+  }
+}
+@keyframes flexGrow {
+  to {
+    flex: 13em;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes flexShrink {
+  to {
+    flex: .001;
+    opacity: 0;
+  }
+}
+@-o-keyframes flexShrink {
+  to {
+    flex: .001;
+    opacity: 0;
+  }
+}
+@keyframes flexShrink {
+  to {
+    flex: .001;
+    opacity: 0;
+  }
+}
+    .drop {
+      position: relative;
+    }
+    .drop ul {
+        margin:0;
+        z-index:3;
+        -webkit-padding-start:0;
+        text-decoration: none;
+        position: absolute;
+      top:3.5em;
+        background-color:#fff;
+      -webkit-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      -webkit-transform-origin: 0 0;
+              transform-origin: 0 0;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+    }
+        .drop:not(.right) ul {
+            left: 1em;
+        }
+        .drop.right ul {
+            right: 1em;
+            -webkit-transform-origin: 100% 0;
+              transform-origin: 100% 0;
+        }
+    .drop ul > li {
+      display: block;
+      width: 100%;
+        z-index: 3;
+    }
+    .drop ul > li > a {
+        z-index: 3;
+      width: 100%;
+      padding: 1em 18px;
+      display: inline-block;
+      white-space: pre;
+      box-sizing: border-box;
+        text-decoration: none;
+        color:rgb(0, 188, 212);
+    }
+    .drop ul > li > a:hover {
+      background: #ebebeb;
+    }
+    .drop:hover ul, .drop:focus ul {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+        -webkit-box-shadow: 5px 0px 5px -2px rgba(0,0,0,0.32);
+        -moz-box-shadow: 5px 0px 5px -2px rgba(0,0,0,0.32);
+        box-shadow: 5px 0px 5px -2px rgba(0,0,0,0.32);
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s
+    }
+
+    .sidenav a:hover, .offcanvas a:focus{
+        color: rgb(0, 188, 212);
+        background-color:#ebebeb;
+    }
+
+    .sidenav > .close {
+        position: absolute;
+        top: .1em;
+        right: .1em;
+        font-size: 36px;
+        cursor: pointer;
+        transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    }
+        .sidenav > .close:hover {
+            color: rgb(0, 188, 212);
+        }
+
+    #app {
+        transition: margin-left .5s;
+    }
+
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    .blur {
+
+         /* Any browser which supports CSS3 */
+        filter: blur(1px);
+
+        /* Webkit */
+        -webkit-filter: blur(1px);
+
+        /* Opera */
+        -o-filter: blur(2px);
+    }
     </style>
+    <div class="sidenav" id="drawer">
+
+    </div>
     <main id="app">
         <div style="color: rgba(0, 0, 0, 0.870588); background-color: rgb(0, 188, 212); transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; box-sizing: border-box; font-family: Roboto, sans-serif; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px; border-radius: 0px; position: relative; z-index: 1100; width: 100%; display: flex; padding-left: 24px; padding-right: 24px;">
             <div style="margin-top: 8px; margin-right: 8px; margin-left: -16px;">
-                <button tabindex="0" type="button" style="border: 10px; box-sizing: border-box; display: inline-block; font-family: Roboto, sans-serif; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: pointer; text-decoration: none; margin: 0px; padding: 12px; outline: none; font-size: 0px; font-weight: inherit; transform: translate(0px, 0px); position: relative; overflow: visible; transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; width: 48px; height: 48px; background: none;">
+                <button tabindex="0" type="button" style="border: 10px; box-sizing: border-box; display: inline-block; font-family: Roboto, sans-serif; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: pointer; text-decoration: none; margin: 0px; padding: 12px; outline: none; font-size: 0px; font-weight: inherit; transform: translate(0px, 0px); position: relative; overflow: visible; transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; width: 48px; height: 48px; background: none;" id="opennav">
                     <div>
                         <span style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; overflow: hidden;"></span>
                         <svg viewBox="0 0 24 24" style="display: inline-block; color: rgb(255, 255, 255); fill: rgb(255, 255, 255); height: 24px; width: 24px; transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; user-select: none;">
@@ -140,7 +308,12 @@ form h1 {
             <h1 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0px; padding-top: 0px; letter-spacing: 0px; font-size: 24px; font-weight: 400; color: rgb(255, 255, 255); height: 64px; line-height: 64px; flex: 1 1 0%;" id="page-title">Welcome to Northwind Traders</h1>
             <div style="margin-top: 8px; margin-right: -16px; margin-left: auto;">
                 <div style="display: inline-block; position: relative;">
-                    <button tabindex="0" type="button" style="color:white;border: 10px; box-sizing: border-box; display: inline-block; font-family: Roboto, sans-serif; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: pointer; text-decoration: none; margin:0; outline: none; font-size: 0px; font-weight: inherit; transform: translate(0px, 0px); position: relative; overflow: visible; transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; width: 48px; height: 48px; background: none;">
+                    <button tabindex="0" type="button" class="drop right" style="color:white;border: 10px; box-sizing: border-box; display: inline-block; font-family: Roboto, sans-serif; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: pointer; text-decoration: none; margin:0; outline: none; font-weight: inherit; transform: translate(0px, 0px); position: relative; overflow: visible; transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; width: 48px; height: 48px; background: none;">
+                                            <ul>
+                      <li><a href="#/register">Register</a></li>
+                      <li><a href="#/login">Login</a></li>
+                      <li><a href="#/logout">Logout</a></li>
+                    </ul>
                         <div>
                             <i class="material-icons" style="font-size:48px;height:48px;width:48px;">account_circle</i>
                         </div>
@@ -152,5 +325,22 @@ form h1 {
         </div>
     </main>
     <?php include 'north_foot.php';?>
+    <script id="sidescript" type="text/javascript">
+        var app = dom("#app");
+        var
+        close = function() {
+            dom("#drawer").style({width: 0});
+            app.style({"margin-left": 0}); //.removeClass("blur").off("click", click);
+        }, 
+        open = function() {
+           app.style({"margin-left": "250px"}); //.addClass("blur")
+            dom("#drawer").style({width: "250px"});
+        };
+        dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
+            .append(dom.a("#/items", {text: "Shop"}))
+            .append(dom.a("#/cart", {text: "Cart"}))
+            .append(dom.a("#/orders", {text: "Order History"}));
+        dom("#opennav").on("click", open);
+    </script>
 </body>
 </html>
