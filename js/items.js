@@ -18,8 +18,22 @@ window.pages.items = function() {
     if (isNaN(page)) { page = 0; }
     if (isNaN(count)) { count = 10; }
 
+    var onscroll = dom.debounce(function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            if (moreItems && !requestPending) {
+                requestPending = true;
+                if (search) {
+                    cart.getItems({page: ++page, length: count, q: search });
+                }
+                else {
+                    cart.getItems({page: ++page, length: count });
+                }
+            }
+        }
+    }, 250);
+
     items.unload = function(container) {
-    
+        window.removeEventListener("scroll", onscroll);
     };
     items.load = function(hash, callback) {
         firstLoad = true;
@@ -90,6 +104,7 @@ window.pages.items = function() {
             }
         });
         console.log("Getting " + count + " items from page " + page);
+        window.addEventListener("scroll", onscroll);
         query(search);
     };
     items.item = function(itemID, callback) {
