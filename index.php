@@ -164,6 +164,7 @@ form a {
   color: white;
   margin-left: 50%;
   margin-bottom: 1%;
+  margin-top: 1%;
   transform: translateX(-50%);
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
 }
