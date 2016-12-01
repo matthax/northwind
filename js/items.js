@@ -77,7 +77,7 @@ window.pages.items = function() {
                 "justify-content": "space-around",
         });
         app.append(itemContainer);
-        var loadMoreButton = dom.create("button", {name:"load", text: "Load More", "class": "material-button-small"}).on("click", function() {
+        var loadMoreButton = dom.create("button", {name:"load", text: "Load More", "class": "material-button-load-button"}).on("click", function() {
                 if (moreItems && !requestPending) {
                     requestPending = true;
                     if (search) {
