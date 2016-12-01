@@ -77,7 +77,7 @@ window.pages.items = function() {
                 "justify-content": "space-around",
         });
         app.append(itemContainer);
-        var loadMoreButton = dom.create("button", {text: "Load More", "class": "material-button-small"}).on("click", function() {
+        var loadMoreButton = dom.create("button", {name:"load", text: "Load More", "class": "material-button-small"}).on("click", function() {
                 if (moreItems && !requestPending) {
                     requestPending = true;
                     if (search) {
@@ -91,6 +91,9 @@ window.pages.items = function() {
         app.append(loadMoreButton);
         cart.on("itemsretrieved", function(ev, items) { 
             console.log("retrieved " + items.length + " items");
+            if (items.length === 0) {
+                app.remove(loadMoreButton);
+            }
             for (var i = 0; i < items.length; ++i) {
                 itemContainer.append(items[i].toElement());
             }
