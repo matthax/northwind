@@ -64,7 +64,6 @@ window.pages.items = function() {
         });
         app.append(itemContainer);
         var loadMoreButton = dom.create("button", {text: "Load More", "class": "material-button-small"}).on("click", function() {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                 if (moreItems && !requestPending) {
                     requestPending = true;
                     if (search) {
@@ -74,7 +73,6 @@ window.pages.items = function() {
                         cart.getItems({page: ++page, length: count });
                     }
                 }
-            }
         });;
         app.append(loadMoreButton);
         cart.on("itemsretrieved", function(ev, items) { 
