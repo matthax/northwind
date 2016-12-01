@@ -59,11 +59,13 @@ window.pages.items = function() {
         };
         var app = dom.div().append(dom.create("input", {type: "text", required: "required", placeholder: "Search", name: "q", "class": "material-input"}).on("keyup", function(ev) {
             if (ev.which == 13 || ev.keyCode == 13) {
+                page = 0;
                 query(this.value);
             }
         }).on("change", function(ev) {
+            page = 0;
             query(this.value);
-        })).append(function() {
+        }))/*.append(function() {
             var chips = [], onclick = function(ev) {
                 query(dom(this).data("category"));
             };
@@ -71,7 +73,7 @@ window.pages.items = function() {
                 chips.push(dom.create("div", {"class": "material-chip", "data-category": cart.categories[i]}).append(dom.span({text: cart.categories[i]})).on("click", onclick));
             }
             return chips;
-            }());
+            }())*/;
         var itemContainer = container.style({
                 padding: 0,
                 margin: 0,
