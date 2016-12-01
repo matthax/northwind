@@ -8,9 +8,6 @@ $password = "";
 $database = "booxch5_NW";
 
 $password_access = "red123";
-$user_id_success = false;
-$password_success = false;
-$login_success = false;
 
 header('Content-Type: application/json');
 
@@ -29,6 +26,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($result["error"])) {
         die(json_encode($result)); 
     }
+    else if ($password_access !== $_POST["password"]) {
+        $result = array("error" => true, "message" => "Invalid username or password");
+        die(json_encode($result));
+    }
     else {
         // Create connection
         $conn = new mysqli($servername, $username, $password, $database);
@@ -40,29 +41,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // prepare and bind
-        $stmt = $conn->prepare("SELECT first_name FROM customers WHERE id = ?");
+        $stmt = $conn->prepare("SELECT `first_name`,`last_name` FROM `customers` where `id` = ?");
         $stmt->bind_param("i", $user_id);
-        
-        $user_id = $conn->real_escape_string($_POST["user_id"]);
+        echo $_POST["user_id"];
+        $user_id = $conn->real_escape_string(intval($_POST["user_id"]));
         $password = $conn->real_escape_string($_POST["password"]);
 
         $stmt->execute();
-        $stmt->bind_result($first_name);
-
-        if ($password === $password_access) {
-            $password_success = true;
+        $stmt->bind_result($first_name, $last_name);
+        
+        if ($stmt->fetch()) {
+            $result = array("id" => $user_id, 
+                            "success" => true,
+                            "first_name" => $first_name,
+                            "last_name" => $last_name
+                            );
+            echo json_encode($result);
         }
-        if (!empty($first_name)) {
-            $user_id_success = true;
+        else {
+            $result = array("error" => true, "message" => "Invalid username or password");
+            echo json_encode($result);
         }
-        if ($password_success && $user_id_success) {
-            $login_success = true;
-        }
-
-        $result = array("user_id_success" => $user_id_success, "password_success" => $password_success, "login_success" => $login_success, "first_name" => $first_name, "user_id" => $user_id);
-        $_SESSION["user_name"] = $first_name;
-        $_SESSION["id"] = $user_id;
-        echo json_encode($result);
 
         $stmt->close();
         $conn->close();
