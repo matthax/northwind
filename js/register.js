@@ -27,7 +27,8 @@ window.pages.register = function () {
             .append(dom.create("input", {type: "text", required: "required", placeholder: "Zip Code", name: "zip_postal_code", "class": "material-input-small"}))
             .append(dom.create("input", {type: "text", required: "required", placeholder: "Country", name: "country_region", "class": "material-input-small"}))
             .append(dom.create("input", {type: "text", required: "required", placeholder: "Home Phone", name: "home_phone", "class": "material-input-small"}))
-            .append(dom.create("input", {type: "submit", placeholder: "", name: "", text: "Register", "class": "material-button-small"}));
+            .append(dom.create("input", {type: "submit", placeholder: "", name: "", text: "Register", "class": "material-button-small"}))
+            .append(dom.a("#/login", {text: "Already Registered? Login In"}));
         callback(form);
     };
     northwind.registerPageHandler("Register", /^\/register\/?/i, register.load);
