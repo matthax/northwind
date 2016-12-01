@@ -156,8 +156,8 @@ form h1 {
   width: 60%;
   height: 3em;
   color: white;
-  margin-top: 10px;
-  margin-left: 165px;
+  margin-left: 50%;
+  transform: translateX(-50%);
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
