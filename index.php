@@ -83,6 +83,7 @@ form h1 {
 form a {
   font-size: 15px;
   margin-left: 20%;
+  text-decoration: none;
 }
 
 .material-input {
