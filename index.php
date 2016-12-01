@@ -110,6 +110,25 @@ form h1 {
   visibility: visible !important;
 }
 
+.material-input-small {
+  margin: auto;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  width: 60%;
+  display: block;
+  border: none;
+  padding: 10px 0;
+  border-bottom: solid 1px rgb(0, 188, 212);
+  -webkit-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+  transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 96%, rgb(0, 188, 212) 4%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, rgb(0, 188, 212) 4%);
+  /*background-position: -300% 0;*/
+  background-size: 0 100%;
+  background-repeat: no-repeat;
+  color: rgb(0, 188, 212);
+}
+
 .material-button {
   border: none;
   background: rgb(0, 188, 212);
@@ -127,6 +146,21 @@ form h1 {
           transform: translateY(-3px);
   box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
+
+.material-button-small {
+  border: none;
+  background: rgb(0, 188, 212);
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px;
+  width: 60%;
+  height: 3em;
+  color: white;
+  margin-top: 10px;
+  margin-left: 165px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
 .flex-item {
   flex: .001;
   opacity: 0;
