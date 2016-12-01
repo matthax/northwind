@@ -2,6 +2,7 @@ if (!window.dom) {
     throw "Dom.js is required";
 }
 window.northwind = function() {
+    var app = dom("#page").style({transition: "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms", position:"relative"});
     var nw = {}, handlers = {}, getHashPage = function() {
         return document.location.hash.length > 0 ? document.location.hash.substr(1).toLowerCase() : "/";
     }, changed = function() {
@@ -34,7 +35,13 @@ window.northwind = function() {
     };
     nw.load = function(page) {
         // make this fancier with like a loading screen or something
-        dom("#page").removeChildren().append(page);
+        var end = function() {
+            console.log("transition end");
+            app.removeChildren().append(page);
+            app.off(dom.transitionEvent, end);
+            app.style({opacity: 1});
+        };
+        app.transitionEnd(end).style({opacity: 0});
     };
     window.addEventListener("hashchange", function() {
         changed();

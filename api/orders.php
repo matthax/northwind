@@ -1,5 +1,5 @@
 <?php
-session_start();
+include('northwind_secure.php');
 
 $servername = "localhost";
 $username = "root";
@@ -26,17 +26,17 @@ if ($conn->connect_error) {
     
     $team_name = $conn->real_escape_string($_POST["name"]);
 }*/
-if (!empty($_GET["CustomerID"])) {
-    if (ctype_digit($_GET["CustomerID"])) {
-        $stmnt = $conn->prepare("SELECT products.product_name, products.standard_cost, products.list_price, products.category, orders.order_date, details.quantity, details.unit_price FROM orders INNER JOIN (SELECT * FROM customers) AS customers on customers.id = orders.customer_id INNER JOIN (SELECT * FROM order_details) AS details on orders.id = details.order_id INNER JOIN (SELECT * FROM products) AS products on details.product_id = products.id WHERE customers.id = ?");
+if (!empty($_SESSION['id'])) {
+    if (ctype_digit($_SESSION['id'])) {
+        $stmnt = $conn->prepare("SELECT products.product_name, products.standard_cost, products.list_price, products.category, orders.order_date, details.quantity, details.unit_price, details.order_id FROM orders INNER JOIN (SELECT * FROM customers) AS customers on customers.id = orders.customer_id INNER JOIN (SELECT * FROM order_details) AS details on orders.id = details.order_id INNER JOIN (SELECT * FROM products) AS products on details.product_id = products.id WHERE customers.id = ?");
         // bind our id parameter
         $stmnt->bind_param("i", $id);
         // set the id parameter
-        $id = intval($_GET["CustomerID"]);
+        $id = intval($_SESSION['id']);
         // execute the statement
         $result = $stmnt->execute();
 
-        $stmnt -> bind_result($product_name, $standard_cost, $list_price, $category, $order_date, $quantity, $unit_price);
+        $stmnt -> bind_result($product_name, $standard_cost, $list_price, $category, $order_date, $quantity, $unit_price, $order_id);
 
         $rows = [];
         while($stmnt->fetch()) {
@@ -46,7 +46,8 @@ if (!empty($_GET["CustomerID"])) {
                     "category" => $category, 
                     "order_date" => $order_date, 
                     "quantity" => $quantity, 
-                    "unit_price" => $unit_price);
+                    "unit_price" => $unit_price,
+                    "order_id" => $order_id);
             $rows[] = $row;    
         }
         echo json_encode($rows); 
@@ -56,7 +57,7 @@ if (!empty($_GET["CustomerID"])) {
         }*/
     }
     else {
-        $err = array("error" => "Invalid Customer ID", "code" => 1);
+        $err = array("error" => true, "message" => "Invalid Customer ID", "code" => 1);
         echo json_encode($err);
     }
 }

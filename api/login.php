@@ -6,7 +6,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "booxch5_NW";
-
+$auth = '09F911029D74E35BD84156C5635688C0';
 $password_access = "red123";
 
 header('Content-Type: application/json');
@@ -55,6 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             "first_name" => $first_name,
                             "last_name" => $last_name
                             );
+            $_SESSION['auth'] = $auth;
+            $_SESSION['id'] = $user_id;
+            $_SESSION['first_name'] = $first_name;
+            $_SESSION['last_name'] = $last_name;
+            $cookie_name = "userid"; 
+
+            setcookie($cookie_name, $username, time() + (86400 * 5), "/");
             echo json_encode($result);
         }
         else {

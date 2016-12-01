@@ -25,7 +25,7 @@ window.pages.register = function () {
             .append(dom.create("input", {type: "text", placeholder: "Country", name: "country_region", "class": "material-input-small"}))
             .append(dom.create("input", {type: "text", placeholder: "Home Phone", name: "home_phone", "class": "material-input-small"}))
             .append(dom.create("input", {type: "submit", placeholder: "", name: "", text: "Register", "class": "material-button-small"}))
-            .append(dom.a("#/login", {text: "Already Registered? Login In"}));
+            .append(dom.a("#/login", {text: "Already Registered? Log In"}));
         callback(form);
     };
     northwind.registerPageHandler("Register", /^\/register\/?/i, register.load);

@@ -545,6 +545,7 @@ var _ajax = function() {
         var xhr = new XMLHttpRequest();
         xhr.responseType = response_type;
         xhr.open(type, url, true);
+        xhr.withCredentials = true;
         switch(response_type.toLowerCase())
         {
             case RESPONSE_TYPES.ArrayBuffer:

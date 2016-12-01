@@ -8,3 +8,4 @@
 <script src="js/items.js" type="text/javascript"></script>
 <script src="js/register.js" type="text/javascript"></script>
 <script src="js/login.js" type="text/javascript"></script>
+<script src="js/orders.js" type="text/javascript"></script>

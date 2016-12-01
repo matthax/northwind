@@ -84,6 +84,7 @@ form a {
   font-size: 15px;
   margin-left: 20%;
   text-decoration: none;
+    color: rgb(0, 188, 212);
 }
 
 .material-input {
@@ -162,10 +163,9 @@ form a {
   width: 60%;
   height: 3em;
   color: white;
-  margin-left: 50%;
-  margin-bottom: 1%;
-  margin-top: 1%;
-  transform: translateX(-50%);
+  display: block;
+  margin: auto;
+    margin-bottom:1%;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
