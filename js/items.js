@@ -12,7 +12,7 @@ window.pages.items = function() {
     var items = {};
     var itemRegex = /^\/items\/[a-z0-9 ]+\/?$/i;
     var itemsRegex = /^\/items\/?/i;
-    var container;
+    var container, downArrow;
     var moreItems = true, requestPending = false, firstLoad = true;
     var page = Number(dom.query.page), count = Number(dom.query.length), search = dom.query.q;
     if (isNaN(page)) { page = 0; }
@@ -80,6 +80,25 @@ window.pages.items = function() {
             console.log("retrieved " + items.length + " items");
             for (var i = 0; i < items.length; ++i) {
                 itemContainer.append(items[i].toElement());
+            }
+            var hasScrollbar = false; //need logic to see if there is or is not a scrollbar
+            if (moreItems && !hasScrollbar) {
+                downArrow = downArrow || dom.icon("arrow_downward").style({
+                    cursor: "pointer",
+                    position: "absolute",
+                    bottom: "1em",
+                    left: "50%",
+                    right: "50%",
+                    //other styling
+                }).on("click", function() {
+                    query(search);
+                }); //does keyboard_arrow_down look better?
+                container.append(downArrow);
+            }
+            else {
+                if (downArrow && downArrow.remove) {
+                    downArrow.remove();
+                }
             }
             requestPending = false;
             if (items.length == 0) {
