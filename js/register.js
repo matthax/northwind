@@ -1,9 +1,6 @@
 if (!window.dom) {
     throw "Dom.js is required";
 }
-if (!window.cart) {
-    throw "Cart.js is required";
-}
 if (!window.northwind) {
     throw "Northwind.js is required";
 }
