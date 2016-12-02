@@ -38,7 +38,7 @@ window.pages.register = function () {
                         if (user.success) {
                             sessionStorage.setItem("user", JSON.stringify(user)); // save the response so we can get their name and all if we want to
                             dom.toast("Hello " + user.first_name + "! Your user ID is " + user.user_id, "tag_faces");
-                            window.setTimeout(function() {location.reload()}, 1200);
+                            window.location.hash = "/items";
                         }
                         else {
                             dom.toast("Oops, " + user.message, "error_outline");
