@@ -420,20 +420,24 @@ form a {
            app.style({"margin-left": "250px"}); //.addClass("blur")
             dom("#drawer").style({width: "250px"});
         };
-        var user = sessionStorage.getItem("user");
-
-        if (user) {
-          dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
-          .append(dom.a("#/items", {text: "Shop"}))
-          .append(dom.a("#/cart", {text: "Cart"}))
-          .append(dom.a("#/orders", {text: "Order History"}));
-          dom("#opennav").on("click", open);
-        } else {
-          dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
-          .append(dom.a("#/login", {text: "Login"}))
-          .append(dom.a("#/register", {text: "Register"}))
-          dom("#opennav").on("click", open);
-        }
+        window.user.on("login", function(event, user) {
+            console.log(event, user);
+            dom("#drawer").removeChildren();
+            if (user && user.success) {
+              dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
+              .append(dom.a("#/items", {text: "Shop"}))
+              .append(dom.a("#/cart", {text: "Cart"}))
+              .append(dom.a("#/orders", {text: "Order History"}));
+              dom("#opennav").on("click", open);
+            } else {
+              dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
+              .append(dom.a("#/login", {text: "Login"}))
+              .append(dom.a("#/register", {text: "Register"}))
+              dom("#opennav").on("click", open);
+            }
+        });
+        var currentUser = JSON.parse(sessionStorage.getItem("user"));
+        window.user.fire("login", currentUser);
     </script>
 </body>
 </html>

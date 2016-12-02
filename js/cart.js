@@ -136,6 +136,8 @@ window.cart = function() {
                 }
                 if (data.success) {
                     dom.toast("Checkout complete!");
+                    cart.clear();
+                    window.location.hash = "/orders";
                 }
                 else if (data.reason === "auth") {
                     window.location.hash = "/login";

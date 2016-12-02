@@ -15,18 +15,37 @@ window.user = function() {
             url: dom.url() + "api/orders",
         },
         listeners = {
-            "orderRetrieved": []
+            "orderRetrieved": [],
+            "login": [],
         };
     var userEvent = function(type) {
         var args;
         switch (type) {
             case "orderRetrieved":
+            case "login":
                 args = arguments[1];
                 break;
         }
         if (listeners[type]) {
             for (var i = 0; i < listeners[type].length; ++i) {
                 listeners[type][i](type, args);
+            }
+        }
+    };
+    user.fire = function(event, args) {
+        userEvent(event, args);
+    };
+    user.on = function(event, listener) {
+        if (listeners[event] && typeof listener === "function") {
+            listeners[event].push(listener);
+        }
+    };
+    user.off = function(event, listener) {
+        if (listeners[event]) {
+            for (var i = listeners[event].length - 1; i >= 0; --i) {
+                if (listeners[event][i] == listener) {
+                    listeners[event].splice(i, 1);
+                }
             }
         }
     };
@@ -94,7 +113,7 @@ window.pages.orders = function () {
     order.load = function (hash, callback) {
         user.getOrders({
             onsuccess : function(orders) {
-                if (orders.length == 0) {
+                if (Object.keys(orders).length === 0) {
                         callback(dom.div().style({"text-align": "center"}).append(dom.create("a", {href: "#/items", text: "Nothing? Well go buy something!"}).style({ 
                             padding: "8px 8px 8px 32px",
                             "text-decoration": "none",
