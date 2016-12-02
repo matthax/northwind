@@ -23,7 +23,9 @@ window.cart = function() {
             "cartsaved": [],
         };
     var cartRegex = /^\/cart\/?$/i;
-    var container;
+    var container, page, checkoutButton = dom.create("input", {type: "button", text: "Checkout", "class": "material-button-small", value: "Checkout"}).on("click", function() {
+                cart.checkout();
+            }).style({width: "10em", "margin-right": "1em", "margin-top": "1em"});
     
     var cartEvent = function(type) {
         var args;
@@ -199,17 +201,23 @@ window.cart = function() {
     };
     var itemRemoved = function(ev, item) {
         console.log("Item rmeoved on cart page");
-        var items = container.children("[data-product='" + item.ProductID + "']");
-        for (var i = items.length - 1; i >= 0; --i) {
-            items[i].animationEnd(function() {
+        var itemEls = container.children("[data-product='" + item.ProductID + "']");
+        for (var i = itemEls.length - 1; i >= 0; --i) {
+            itemEls[i].animationEnd(function() {
                 dom(this).remove();
             });
-            items[i].addClass("remove");
+            itemEls[i].addClass("remove");
+        }
+        if (Object.keys(items).length === 0) {
+            page.remove(checkoutButton);
         }
     };
     var itemAdded = function(ev, item) {
         console.log("Item added on cart page");
         container.append(item.toElement(true));
+        if (!checkoutButton.node.parentNode) {
+            page.before(checkoutButton, page.node.firstChild);
+        }
     };
     cart.unload = function(container) {
         cart.off("itemadded", itemRemoved);
@@ -218,17 +226,12 @@ window.cart = function() {
     cart.open = function(hash, callback) {
         cart.on("itemremoved", itemRemoved);
         cart.on("itemadded", itemAdded);
-        console.log("opened cart");
-        container = cart.getPage();
-        console.log(container);
-        callback(container);
+        callback(cart.getPage());
     };
     cart.getPage = function() {
         var wrapper = dom.div();
         if (Object.keys(items).length > 0) {
-            wrapper.append(dom.create("input", {type: "button", text: "Checkout", "class": "material-button-small", value: "Checkout"}).on("click", function() {
-                cart.checkout();
-            }).style({width: "10em", "margin-right": "1em"}));
+            wrapper.append(checkoutButton);
         }
         var itemContainer = dom.div().style({
             padding: 0,
@@ -257,7 +260,9 @@ window.cart = function() {
                 right: ".5em",
             })));
         }
+        container = itemContainer;
         wrapper.append(itemContainer);
+        page = wrapper;
         return wrapper;
     };
     cart.remove = function(item) {
