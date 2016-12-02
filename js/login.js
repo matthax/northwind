@@ -28,8 +28,8 @@ window.pages.login = function () {
                     oncomplete: function(xhr, user) {
                         if (user.success) {
                             sessionStorage.setItem("user", JSON.stringify(user)); // save the response so we can get their name and all if we want to
-                        
                             dom.toast("Welcome back " + user.first_name + "!", "tag_faces");
+                            window.setTimeout(function() {location.reload()}, 1000);
                         }
                         else {
                             dom.toast("Oops, " + user.message, "error_outline");
