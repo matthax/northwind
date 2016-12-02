@@ -420,11 +420,20 @@ form a {
            app.style({"margin-left": "250px"}); //.addClass("blur")
             dom("#drawer").style({width: "250px"});
         };
-        dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
-            .append(dom.a("#/items", {text: "Shop"}))
-            .append(dom.a("#/cart", {text: "Cart"}))
-            .append(dom.a("#/orders", {text: "Order History"}));
-        dom("#opennav").on("click", open);
+        var user = sessionStorage.getItem("user");
+
+        if (user) {
+          dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
+          .append(dom.a("#/items", {text: "Shop"}))
+          .append(dom.a("#/cart", {text: "Cart"}))
+          .append(dom.a("#/orders", {text: "Order History"}));
+          dom("#opennav").on("click", open);
+        } else {
+          dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
+          .append(dom.a("#/login", {text: "Login"}))
+          .append(dom.a("#/register", {text: "Register"}))
+          dom("#opennav").on("click", open);
+        }
     </script>
 </body>
 </html>
