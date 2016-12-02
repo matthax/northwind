@@ -29,7 +29,7 @@ window.pages.login = function () {
                         if (user.success) {
                             window.user.fire("login", user);
                             sessionStorage.setItem("user", JSON.stringify(user)); // save the response so we can get their name and all if we want to
-                        
+                            
                             dom.toast("Welcome back " + user.first_name + "!", "tag_faces");
                             window.location.hash = "/orders";
                         }

@@ -11,6 +11,7 @@ window.pages.register = function () {
         
     };
     register.load = function (hash, callback) {
+        var registerButton = dom.create("input", {type: "submit", placeholder: "", name: "", text: "Register", "class": "material-button-small"});
         var form = dom.create("form", {action: dom.url() + "api/register", method: "POST" })
             /*.append(dom.create("h1", {text: "Register"}))*/
             .append(dom.create("input", {type: "text", required: "required", placeholder: "First Name", name: "first_name", "class": "material-input-small"}))
@@ -24,8 +25,34 @@ window.pages.register = function () {
             .append(dom.create("input", {type: "text", placeholder: "Zip Code", name: "zip_postal_code", "class": "material-input-small"}))
             .append(dom.create("input", {type: "text", placeholder: "Country", name: "country_region", "class": "material-input-small"}))
             .append(dom.create("input", {type: "text", placeholder: "Home Phone", name: "home_phone", "class": "material-input-small"}))
-            .append(dom.create("input", {type: "submit", placeholder: "", name: "", text: "Register", "class": "material-button-small"}))
-            .append(dom.a("#/login", {text: "Already Registered? Log In"}));
+            .append(registerButton)
+            .append(dom.a("#/login", {text: "Already Registered? Log In"})).on("submit", function(ev) {
+                ev.preventDefault();
+                registerButton.attr({disabled: "disabled"});
+                dom.ajax({
+                    type: "POST",
+                    url: form.attr("action"),
+                    responseType: dom.ajax.RESPONSE_TYPES.JSON,
+                    data: new FormData(this),
+                    oncomplete: function(xhr, user) {
+                        if (user.success) {
+                            sessionStorage.setItem("user", JSON.stringify(user)); // save the response so we can get their name and all if we want to
+                            dom.toast("Hello " + user.first_name + "! Your user ID is " + user.user_id, "tag_faces");
+                            window.setTimeout(function() {location.reload()}, 1200);
+                        }
+                        else {
+                            dom.toast("Oops, " + user.message, "error_outline");
+                        }
+                        registerButton.removeAttr("disabled");
+                    },
+                    onerror: function(xhr) {
+                        console.error("XHR failed for login", xhr);
+                        window.registerdata = xhr;
+                        registerButton.removeAttr("disabled");
+                    }
+                });
+                return false;
+            });
         callback(form);
     };
     northwind.registerPageHandler("Register", /^\/register\/?/i, register.load);

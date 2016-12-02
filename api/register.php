@@ -49,9 +49,11 @@ header('Content-Type: application/json');
             $country_region = $conn->real_escape_string($_POST["country_region"]);
 
             $stmt->execute();
-            $result = array("success" => true, "user_id" =>$stmt->insert_id);
-            $_SESSION["user_name"] = $first_name;
+            $result = array("success" => true, "user_id" =>$stmt->insert_id, "first_name" => $first_name, "last_name" => $last_name);
+            $_SESSION["first_name"] = $first_name;
+            $_SESSION['last_name'] = $last_name;
             $_SESSION["id"] = $result["user_id"];
+            
             echo json_encode($result);
 
             $stmt->close();
