@@ -10,7 +10,7 @@ window.cart = function() {
         toast: true,
         debug: true,
         requestType: ajax.REQUESTS.GET,
-        url: dom.url() + "/api/cart",
+        url: dom.url() + "api/cart",
 
     },
         listeners = {
@@ -129,7 +129,7 @@ window.cart = function() {
             type: "POST",
             url: settings.url + "/checkout",
             responseType: dom.ajax.RESPONSE_TYPES.JSON,
-            data: items,
+            data: JSON.stringify(items),
             oncomplete: function(xhr, data) {
                 if (settings.debug) {
                     window.checkoutResponse = data;

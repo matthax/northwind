@@ -9,8 +9,7 @@ $database = "booxch5_NW";
 $totalPrice = 0;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo $_POST;
-    $data = json_decode(file_get_contents("php://input"));
+    $data = json_decode(file_get_contents("php://input"), true);
     /*$required_fields = array("product_id", "quantity");
     $result = array();
     /oreach ($required_fields as $field) {
@@ -45,16 +44,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $detail_stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, unit_price, status_id) VALUES (?, ?, ?, ?, 2)");
         $detail_stmt->bind_param("ssss", $order_id, $customer_id, $quantity, $unit_price);
         // prepare and bind
-        
         foreach ($data as $id => $product) {
+            /*foreach ($product as $key => $val) {
+                echo $key." ".$val;
+            }*/
             $customer_id = $_SESSION["id"];
-            $product_id = $product["ProductID"];
+            $product_id = $id;
             $quantity = $product["Quantity"];
             $unit_price = $product["Price"];
-            $totalPrice += $quantity * $price;
+            $totalPrice += $quantity * $unit_price;
             $detail_stmt->execute();
         }
-        $result = array("success" => true, "total" => $totalPrice, "date" => date('Y-m-d H:i:s'), "order_id" => $order_id, "shipped_date" => $shipped_date);
+        $result = array("success" => true, "total" => $totalPrice, "date" => date('Y-m-d H:i:s'), "order_id" => $order_id, "shipped_date" => date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')." + 1 day")));
         echo json_encode($result);
 
         $stmt->close();
