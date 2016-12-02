@@ -137,6 +137,7 @@ window.cart = function() {
                 if (data.success) {
                     dom.toast("Checkout complete!");
                     cart.clear();
+                    cart.save();
                     window.location.hash = "/orders";
                 }
                 else if (data.reason === "auth") {
@@ -223,6 +224,12 @@ window.cart = function() {
         callback(container);
     };
     cart.getPage = function() {
+        var wrapper = dom.div();
+        if (Object.keys(items).length > 0) {
+            wrapper.append(dom.create("input", {type: "button", text: "Checkout", "class": "material-button-small", value: "Checkout"}).on("click", function() {
+                cart.checkout();
+            }).style({width: "10em", "margin-right": "1em"}));
+        }
         var itemContainer = dom.div().style({
             padding: 0,
             margin: 0,
@@ -250,7 +257,8 @@ window.cart = function() {
                 right: ".5em",
             })));
         }
-        return itemContainer;
+        wrapper.append(itemContainer);
+        return wrapper;
     };
     cart.remove = function(item) {
         var old;
@@ -284,7 +292,7 @@ window.cart = function() {
     cart.getItem = function(productID, callback, error) {
         dom.ajax({
             type: settings.requestType,
-            url: settings.url + "items",
+            url: settings.url + "/items",
             responseType: dom.ajax.RESPONSE_TYPES.JSON,
             data: { ProductID: productID },
             oncomplete: function(xhr, data) {
