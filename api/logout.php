@@ -1,6 +1,7 @@
 <?php 
 
 session_start();
+$result = array("success" => false);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     session_unset();
@@ -9,7 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $uri  = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
     $tgt = 'login.php';
     header("Location: http://$host$uri/$tgt");
+    
+    $result = array("success" => true);
     exit;
 }
+echo json_encode($result);
 
 ?>
