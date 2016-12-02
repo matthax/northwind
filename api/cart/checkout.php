@@ -1,5 +1,5 @@
 <?php 
-session_start(); 
+include("northwind_secure.php");
 
 header('Content-Type: application/json');
 $servername = "localhost";
@@ -8,11 +8,13 @@ $password = "";
 $database = "booxch5_NW";
 $totalPrice = 0;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {        
-    $required_fields = array("product_id", "quantity");
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    echo $_POST;
+    $data = json_decode(file_get_contents("php://input"));
+    /*$required_fields = array("product_id", "quantity");
     $result = array();
-    foreach ($required_fields as $field) {
-        if (empty($_POST[$field])) {
+    /oreach ($required_fields as $field) {
+        if (empty($data[$field])) {
             $result["error"] = true;
             if (!isset($result["missing_fields"])) {
                 $result["missing_fields"] = array();
@@ -23,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($result["error"])) {
         die(json_encode($result)); 
     }
-    else {
+    else {*/
         // Create connection
         $conn = new mysqli($servername, $username, $password, $database);
 
@@ -43,7 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $detail_stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, unit_price, status_id) VALUES (?, ?, ?, ?, 2)");
         $detail_stmt->bind_param("ssss", $order_id, $customer_id, $quantity, $unit_price);
         // prepare and bind
-        foreach ($_POST as $id => $product) {
+        
+        foreach ($data as $id => $product) {
             $customer_id = $_SESSION["id"];
             $product_id = $product["ProductID"];
             $quantity = $product["Quantity"];
@@ -51,13 +54,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $totalPrice += $quantity * $price;
             $detail_stmt->execute();
         }
-        
         $result = array("success" => true, "total" => $totalPrice, "date" => date('Y-m-d H:i:s'), "order_id" => $order_id, "shipped_date" => $shipped_date);
         echo json_encode($result);
 
         $stmt->close();
         $conn->close();
-    }
+    //}
 }
 
 ?>

@@ -124,6 +124,37 @@ window.cart = function() {
             cartEvent("cartsaved");
         }
     };
+    cart.checkout = function() {
+        dom.ajax({
+            type: "POST",
+            url: settings.url + "/checkout",
+            responseType: dom.ajax.RESPONSE_TYPES.JSON,
+            data: items,
+            oncomplete: function(xhr, data) {
+                if (settings.debug) {
+                    window.checkoutResponse = data;
+                }
+                if (data.success) {
+                    dom.toast("Checkout complete!");
+                }
+                else if (data.reason === "auth") {
+                    window.location.hash = "/login";
+                }
+                else {
+                    dom.toast("Error checking out, please try again.");
+                }
+            },
+            onerror: function(xhr) {
+                if (settings.debug) {
+                    console.error("XHR failed for item validation", xhr);
+                    cartEvent("xhrerror", xhr);
+                    if (props.onerror) { 
+                        onerror(xhr);
+                    }
+                }
+            }
+        });
+    };
     cart.on("itemadded", function(ev, item) {
         //console.log(item);
         if (settings.toast) {

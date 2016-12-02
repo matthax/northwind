@@ -34,14 +34,11 @@ window.northwind = function() {
         return old;
     };
     nw.load = function(page) {
-        // make this fancier with like a loading screen or something
-        var end = function() {
-            console.log("transition end");
+        app.style({opacity: 0}); // transitionListener isn't working great so we will cheat...
+        window.setTimeout(function() {
             app.removeChildren().append(page);
-            app.off(dom.transitionEvent, end);
             app.style({opacity: 1});
-        };
-        app.transitionEnd(end).style({opacity: 0});
+        }, 500);
     };
     window.addEventListener("hashchange", function() {
         changed();
