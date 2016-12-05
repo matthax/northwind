@@ -59,9 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['id'] = $user_id;
             $_SESSION['first_name'] = $first_name;
             $_SESSION['last_name'] = $last_name;
-            $cookie_name = "userid"; 
+            $cookie_name = "user_id"; 
 
-            setcookie($cookie_name, $username, time() + (86400 * 5), "/");
+            setcookie($cookie_name, $user_id, time() + (86400 * 5), "/");
             echo json_encode($result);
         }
         else {
