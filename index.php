@@ -403,7 +403,7 @@ form a {
                       <li id="account_cart" style="display:none;"><a href="#/cart">Cart</a></li>
                       <li id="account_login"><a href="#/login">Login</a></li>
                       <li id="account_register"><a href="#/register">Register</a></li>
-                      <li id="account_logout" style="display:none;"><a href="#/logout">Logout</a></li>
+                      <li id="account_logout" style="display:none;"><a>Logout</a></li>
                     </ul>
                         <div>
                             <i class="material-icons" style="font-size:48px;height:48px;width:48px;">account_circle</i>
