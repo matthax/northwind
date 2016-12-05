@@ -48,6 +48,6 @@ window.pages.login = function () {
             });
         callback(form); 
     };
-    northwind.registerPageHandler("Login", /^\/login\/?|\//i, login.load);
+    northwind.registerPageHandler("Login", /^\/login\/?/i, login.load);
     return login;
 }();

@@ -463,7 +463,7 @@ form a {
                         if (response.success) {
                             sessionStorage.setItem("user", null); // save the response so we can get their name and all if we want to
                             
-                            dom.toast("Bye " + user.first_name + "!", "tag_faces");
+                            dom.toast("Bye Felicia!", "tag_faces");
                             window.location.hash = "/login";
                         }
                         else {
