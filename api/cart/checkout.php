@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             /*foreach ($product as $key => $val) {
                 echo $key." ".$val;
             }*/
-            $product_id = intval($id);
+            $product_id = intval($product["ProductID"]);
             $quantity = intval($product["Quantity"]);
             $unit_price = floatval($product["Price"]);
             $totalPrice += $quantity * $unit_price;
