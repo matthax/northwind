@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $order_id = $stmt->insert_id;
 
         $detail_stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, unit_price, status_id) VALUES (?, ?, ?, ?, 2)");
-        $detail_stmt->bind_param("ssss", $order_id, $customer_id, $quantity, $unit_price);
+        $detail_stmt->bind_param("ssss", $order_id, $product_id, $quantity, $unit_price);
         // prepare and bind
         foreach ($data as $id => $product) {
             /*foreach ($product as $key => $val) {
