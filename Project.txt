@@ -1,6 +1,8 @@
 NorthWind Project
 
-This project will test and include all the technoliges we have covered in class (HTML, CSS, PHP, AJAX etc). You are tasked to create a website for NorthWind. NorthWind is a distributor and they have a database, but they do not have an effective method of viewing, editing, maintaining etc. this data. They want you to create a application/website where customers can log-in and order products from. 
+This project will test and include all the technoliges we have covered in class (HTML, CSS, PHP, AJAX etc). You are tasked to create a website for NorthWind. 
+NorthWind is a distributor and they have a database, but they do not have an effective method of viewing, editing, maintaining etc. this data. 
+They want you to create a application/website where customers can log-in and order products from. 
 
 1) Create a log in page for Customers. 
 	A) Customer information is kept in the "customers" table. 

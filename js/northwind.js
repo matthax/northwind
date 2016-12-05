@@ -21,6 +21,7 @@ window.northwind = function() {
         if(!pageExists) {
             if (window.pages && window.pages.notfound && window.pages.notfound.load) {
                 window.pages.notfound.load(page, nw.load);
+                dom("#page-title").text("Page not found");
             }
         }
     };

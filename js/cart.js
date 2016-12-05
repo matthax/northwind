@@ -137,7 +137,7 @@ window.cart = function() {
                     window.checkoutResponse = data;
                 }
                 if (data.success) {
-                    dom.toast("Placed order #" + data.order_id + " for $" + Number.toFixed(data.total, 2));
+                    dom.toast("Placed order #" + data.order_id + " for $" + Number.parseFloat(data.total).toFixed(2));
                     cart.clear();
                     cart.save();
                     window.location.hash = "/orders";
