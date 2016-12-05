@@ -402,6 +402,7 @@ form a {
                     <ul id="account_menu">
                       <li id="account_cart" style="display:none;"><a href="#/cart">Cart</a></li>
                       <li id="account_login"><a href="#/login">Login</a></li>
+                      <li id="account_register"><a href="#/register">Register</a></li>
                       <li id="account_logout" style="display:none;"><a href="#/logout">Logout</a></li>
                     </ul>
                         <div>
@@ -431,6 +432,7 @@ form a {
             dom("#drawer").removeChildren();
             if (user && user.success) {
                 dom("#account_login").style({display: "none"});
+                dom("#account_register").style({display: "none"});
                 dom("#account_cart").style({display: "block"});
                 dom("#account_logout").style({display: "block"});
               dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
@@ -440,6 +442,7 @@ form a {
               dom("#opennav").on("click", open);
             } else {
                 dom("#account_login").style({display: "block"});
+                dom("#account_register").style({display: "block"});
                 dom("#account_cart").style({display: "none"});
                 dom("#account_logout").style({display: "none"});
               dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
@@ -449,7 +452,30 @@ form a {
             }
         };
         window.user.on("login", login);
-        window.user.login(null, login);
+        login("login", JSON.parse(sessionStorage.getItem("user")));
+        dom("#account_logout").on("click", function(ev) {
+            dom.ajax({
+                    type: "GET",
+                    url: dom.url() + "api/logout",
+                    responseType: dom.ajax.RESPONSE_TYPES.JSON,
+                    data: "",
+                    oncomplete: function(xhr, response) {
+                        if (response.success) {
+                            sessionStorage.setItem("user", null); // save the response so we can get their name and all if we want to
+                            
+                            dom.toast("Bye " + user.first_name + "!", "tag_faces");
+                            window.location.hash = "/login";
+                        }
+                        else {
+                            dom.toast("Oops, we couldn't log you out!", "error_outline");
+                        }
+                    },
+                    onerror: function(xhr) {
+                        console.error("XHR failed for login", xhr);
+                        window.logindata = xhr;
+                    }
+                });
+        });
     </script>
 </body>
 </html>
