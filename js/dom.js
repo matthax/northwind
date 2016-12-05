@@ -351,7 +351,18 @@ dom.icon = function(icon) {
 };
 dom.fontawesome = function(icon) {
     return this.create('i', {class: 'fa fa-' + icon});
-}
+};
+dom.onload = function(f) {
+    var old = window.onload;
+    if (typeof window.onload != 'function') {
+        window.onload = f;
+    } else {
+        window.onload = function () {
+            old();
+            f();
+        }
+    }
+};
 /*dom.toast = function(text) {
     var icon = arguments.length > 1 && typeof arguments[1] === "string" ? dom.icon(arguments[1]).style({float:'left'}) : (arguments.length > 2 && typeof arguments[2] === "string" ? dom.icon(arguments[2]).style({float:'left'}) : null);
     

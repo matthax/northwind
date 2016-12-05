@@ -327,7 +327,13 @@ form a {
         -moz-box-shadow: 5px 0px 5px -2px rgba(0,0,0,0.32);
         box-shadow: 5px 0px 5px -2px rgba(0,0,0,0.32);
     }
-
+        a {
+            color: rgb(129, 129, 129);
+            transition: color 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+        }
+        a:hover {
+            color: rgb(0, 188, 212);
+        }
     .sidenav a {
         padding: 8px 8px 8px 32px;
         text-decoration: none;
@@ -394,9 +400,9 @@ form a {
                 <div style="display: inline-block; position: relative;">
                     <button tabindex="0" type="button" class="drop right" style="color:white;border: 10px; box-sizing: border-box; display: inline-block; font-family: Roboto, sans-serif; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: pointer; text-decoration: none; margin:0; outline: none; font-weight: inherit; transform: translate(0px, 0px); position: relative; overflow: visible; transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; width: 48px; height: 48px; background: none;">
                     <ul id="account_menu">
-                      <li><a href="#/cart">Cart</a></li>
-                      <li><a href="#/login">Login</a></li>
-                      <li><a href="#/logout">Logout</a></li>
+                      <li id="account_cart" style="display:none;"><a href="#/cart">Cart</a></li>
+                      <li id="account_login"><a href="#/login">Login</a></li>
+                      <li id="account_logout" style="display:none;"><a href="#/logout">Logout</a></li>
                     </ul>
                         <div>
                             <i class="material-icons" style="font-size:48px;height:48px;width:48px;">account_circle</i>
@@ -419,25 +425,31 @@ form a {
         open = function() {
            app.style({"margin-left": "250px"}); //.addClass("blur")
             dom("#drawer").style({width: "250px"});
-        };
-        window.user.on("login", function(event, user) {
+        },
+            login = function(event, user) {
             console.log(event, user);
             dom("#drawer").removeChildren();
             if (user && user.success) {
+                dom("#account_login").style({display: "none"});
+                dom("#account_cart").style({display: "block"});
+                dom("#account_logout").style({display: "block"});
               dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
               .append(dom.a("#/items", {text: "Shop"}))
               .append(dom.a("#/cart", {text: "Cart"}))
               .append(dom.a("#/orders", {text: "Order History"}));
               dom("#opennav").on("click", open);
             } else {
+                dom("#account_login").style({display: "block"});
+                dom("#account_cart").style({display: "none"});
+                dom("#account_logout").style({display: "none"});
               dom("#drawer").append(dom.icon("close").addClass("close").on("click", close))
               .append(dom.a("#/login", {text: "Login"}))
               .append(dom.a("#/register", {text: "Register"}))
               dom("#opennav").on("click", open);
             }
-        });
-        var currentUser = JSON.parse(sessionStorage.getItem("user"));
-        window.user.fire("login", currentUser);
+        };
+        window.user.on("login", login);
+        window.user.login(null, login);
     </script>
 </body>
 </html>
