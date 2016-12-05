@@ -39,19 +39,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("s", $customer_id);
         $customer_id = $_SESSION["id"];
         $stmt->execute();
-        $order_id = $stmt->insert_id;
 
         $detail_stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, unit_price, status_id) VALUES (?, ?, ?, ?, 2)");
-        $detail_stmt->bind_param("ssss", $order_id, $product_id, $quantity, $unit_price);
+        $detail_stmt->bind_param("iiii", $order_id, $product_id, $quantity, $unit_price);
+        $order_id = $stmt->insert_id;
         // prepare and bind
         foreach ($data as $id => $product) {
             /*foreach ($product as $key => $val) {
                 echo $key." ".$val;
             }*/
-            $customer_id = $_SESSION["id"];
-            $product_id = $id;
-            $quantity = $product["Quantity"];
-            $unit_price = $product["Price"];
+            $product_id = intval($id);
+            $quantity = intval($product["Quantity"]);
+            $unit_price = floatval($product["Price"]);
             $totalPrice += $quantity * $unit_price;
             $detail_stmt->execute();
         }
