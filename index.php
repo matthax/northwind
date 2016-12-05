@@ -454,6 +454,7 @@ form a {
         window.user.on("login", login);
         login("login", JSON.parse(sessionStorage.getItem("user")));
         dom("#account_logout").on("click", function(ev) {
+            var name = JSON.parse(sessionStorage.getItem("user")).first_name;
             dom.ajax({
                     type: "GET",
                     url: dom.url() + "api/logout",
@@ -463,7 +464,8 @@ form a {
                         if (response.success) {
                             sessionStorage.setItem("user", null); // save the response so we can get their name and all if we want to
                             
-                            dom.toast("Bye Felicia!", "tag_faces");
+                            dom.toast("Bye " + name + "!", "tag_faces");
+                            login("login", null);
                             window.location.hash = "/login";
                         }
                         else {
