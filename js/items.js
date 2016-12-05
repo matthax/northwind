@@ -13,7 +13,7 @@ window.pages.items = function() {
     var itemRegex = /^\/items\/[a-z0-9 ]+\/?$/i;
     var itemsRegex = /^\/items\/?/i;
     var container;
-    var moreItems = true, requestPending = false, firstLoad = true;
+    var moreItems = true, requestPending = false, firstLoad = true, showingItem = false;
     var page = Number(dom.query.page), count = Number(dom.query.length), search = dom.query.q;
     if (isNaN(page)) { page = 0; }
     if (isNaN(count)) { count = 10; }
@@ -50,6 +50,7 @@ window.pages.items = function() {
             search = value;
             itemContainer.removeChildren();
             requestPending = true;
+            showingItem = false;
             if (search) {
                 cart.getItems({page: page, length: count, q: search });
             }
@@ -99,21 +100,23 @@ window.pages.items = function() {
                 }
         });;
         app.append(loadMoreButton);
-        cart.on("itemsretrieved", function(ev, items) { 
-            console.log("retrieved " + items.length + " items");
-            if (items.length === 0 && loadMoreButton) {
-                loadMoreButton.remove();
-            }
-            for (var i = 0; i < items.length; ++i) {
-                itemContainer.append(items[i].toElement());
-            }
-            requestPending = false;
-            if (items.length == 0) {
-                moreItems = false;
-            }
-            if (firstLoad) {
-                firstLoad = false;
-                callback(app);
+        cart.on("itemsretrieved", function(ev, items) {
+            if (!showingItem) {
+                console.log("retrieved " + items.length + " items");
+                if (items.length === 0 && loadMoreButton) {
+                    loadMoreButton.remove();
+                }
+                for (var i = 0; i < items.length; ++i) {
+                    itemContainer.append(items[i].toElement());
+                }
+                requestPending = false;
+                if (items.length == 0) {
+                    moreItems = false;
+                }
+                if (firstLoad) {
+                    firstLoad = false;
+                    callback(app);
+                }
             }
         });
         console.log("Getting " + count + " items from page " + page);
@@ -122,6 +125,7 @@ window.pages.items = function() {
     };
     items.item = function(itemID, callback) {
         firstLoad = true;
+        showingItem = true;
         cart.getItem(itemID, function(item) {
             var stars = function() {
                 var s = [];
