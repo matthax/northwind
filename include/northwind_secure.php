@@ -9,7 +9,7 @@ function isLoggedIn() {
     return False;
 }
 if (!isLoggedIn()) {
-    $result = array("error" => true, "message" => "You must be logged in to access this page", "reason" => "auth");
+    $result = array("error" => true, "message" => "You must be logged in to access this page", "reason" => "auth", "session" => $_SESSION);
     die(json_encode($result));
 }
 ?>

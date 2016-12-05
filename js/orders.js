@@ -60,6 +60,8 @@ window.user = function() {
             oncomplete: function(xhr, data) {
                 if (data.error) {
                     dom.toast(data.message);
+                    console.warn("User authentication failed, please log in. Check window.phpSession for details");
+                    window.phpSession = data.session;
                     if (data.reason === "auth") {
                         window.location.hash = "/login";
                     }
