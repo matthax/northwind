@@ -137,7 +137,7 @@ window.cart = function() {
                     window.checkoutResponse = data;
                 }
                 if (data.success) {
-                    dom.toast("Checkout complete!");
+                    dom.toast("Placed order #" + data.order_id + " for $" + Number.toFixed(data.total, 2));
                     cart.clear();
                     cart.save();
                     window.location.hash = "/orders";
@@ -200,7 +200,7 @@ window.cart = function() {
         }
     };
     var itemRemoved = function(ev, item) {
-        console.log("Item rmeoved on cart page");
+        console.log("Item removed on cart page");
         var itemEls = container.children("[data-product='" + item.ProductID + "']");
         for (var i = itemEls.length - 1; i >= 0; --i) {
             itemEls[i].animationEnd(function() {
