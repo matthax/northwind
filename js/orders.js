@@ -65,12 +65,14 @@ window.user = function() {
                             
                             dom.toast("Welcome back " + user.first_name + "!", "tag_faces");
                             window.location.hash = "/orders";
+                            user.loggedIn = true;
                             if(arguments.length > 1 && typeof arguments[1] === "function") {
                                 arguments[1](currentUser);
                             }
                         }
                         else {
                             dom.toast("Oops, " + user.message, "error_outline");
+                            user.loggedIn = false;
                         }
                         loginButton.removeAttr("disabled");
                     },
@@ -78,12 +80,14 @@ window.user = function() {
                         console.error("XHR failed for login", xhr);
                         window.logindata = xhr;
                         loginButton.removeAttr("disabled");
+                        user.loggedIn = false;
                     }
                 });
         }
         else if(arguments.length > 1 && typeof arguments[1] === "function") {
             arguments[1](currentUser);
         }
+        
     };
     // @props {onsuccess, onerror, length, page}
     user.getOrders = function(props) {
