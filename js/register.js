@@ -36,6 +36,7 @@ window.pages.register = function () {
                     data: new FormData(this),
                     oncomplete: function(xhr, user) {
                         if (user.success) {
+                            window.user.fire("login", user);
                             sessionStorage.setItem("user", JSON.stringify(user)); // save the response so we can get their name and all if we want to
                             dom.toast("Hello " + user.first_name + "! Your user ID is " + user.user_id, "tag_faces");
                             window.location.hash = "/items";

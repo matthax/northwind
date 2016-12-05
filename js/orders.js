@@ -49,46 +49,6 @@ window.user = function() {
             }
         }
     };
-    user.login = function(credentials) {
-        var currentUser = user.currentUser = JSON.parse(sessionStorage.getItem("user"));
-        if (credentials && (!currentUser || !currentUser.success)) {
-            dom.ajax({
-                    type: "POST",
-                    url: dom.url() + "api/login",
-                    responseType: dom.ajax.RESPONSE_TYPES.JSON,
-                    data: credentials,
-                    oncomplete: function(xhr, user) {
-                        if (user.success) {
-                            currentUser = window.user.currentUser = user;
-                            userEvent("login", user);
-                            sessionStorage.setItem("user", JSON.stringify(user)); // save the response so we can get their name and all if we want to
-                            
-                            dom.toast("Welcome back " + user.first_name + "!", "tag_faces");
-                            window.location.hash = "/orders";
-                            user.loggedIn = true;
-                            if(arguments.length > 1 && typeof arguments[1] === "function") {
-                                arguments[1](currentUser);
-                            }
-                        }
-                        else {
-                            dom.toast("Oops, " + user.message, "error_outline");
-                            user.loggedIn = false;
-                        }
-                        loginButton.removeAttr("disabled");
-                    },
-                    onerror: function(xhr) {
-                        console.error("XHR failed for login", xhr);
-                        window.logindata = xhr;
-                        loginButton.removeAttr("disabled");
-                        user.loggedIn = false;
-                    }
-                });
-        }
-        else if(arguments.length > 1 && typeof arguments[1] === "function") {
-            arguments[1](currentUser);
-        }
-        
-    };
     // @props {onsuccess, onerror, length, page}
     user.getOrders = function(props) {
         //items?length=10&page=0
