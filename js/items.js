@@ -135,15 +135,11 @@ window.pages.items = function() {
                 return s;
             }();
             var container = dom.div().style({
-                width: '95vw',
+                width: "100%",
                 'font-family': 'Roboto, sans-serif', 
-                'margin-left': '50%',
-                transform: 'translateX(-50%)'
             }).append(item.toElement().style({
-                width: '95vw',
                 border: 'none',
-                'margin-left': '50%',
-                transform: 'translateX(-50%)',
+                width: "100%",
             })).append(dom.div().append(dom.create('h1', {text: 'User Reviews'})).append(dom.div().append(stars).append(dom.span({text: 'legit_reviewer1'}).style({'vertical-align': 'top','font-size': '20px', 'margin-left': '10px'}))).append(dom.p('Totally awesome item, I received my ' + item.ProductName + ' a few days ago and boy oh boy am I satisfied')));
             callback(container);
             
